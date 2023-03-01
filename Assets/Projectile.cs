@@ -4,17 +4,32 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    Rigidbody2D rb;
-    private void OnEnable()
+    public int problemsEliminated = 0;
+    public GameObject[] problems;
+
+    void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        problems = GameObject.FindGameObjectsWithTag("Problem");
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.tag == "Projectile")
+        {
+
+        }
+        else if (collision.gameObject.tag == "Problem")
+        {
+            problemsEliminated++;
+            if (problemsEliminated == problems.Length)
+            {
+                GameManager.ProblemsCleared?.Invoke();
+            }
+        }
+        else
         {
             Destroy(gameObject);
         }
-
+        
     }
 }

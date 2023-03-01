@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    public int score = 0, health = 50, maxHealth = 50;
+    public int health = 10, maxHealth = 10, movementSpeed = 2;
     public GameObject healthBarUI;
     public Slider healthSlider;
 
@@ -18,12 +15,29 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        healthSlider.value = CalculateHealth();
-        if (health <= 0)
-        {
-            EnemyKilled();
-        }
+        CheckHealth();
+        EnemyMovement(ChangeDirection());
     }
+
+    private void LateUpdate()
+    {
+        healthSlider.value = CalculateHealth();
+    }
+
+    int ChangeDirection()
+    {
+        Vector3 currentPosition = (transform.position).normalized;
+        int moveDirection = (int)currentPosition.x;
+        return moveDirection;
+    }
+
+    void EnemyMovement(int direction)
+    {
+        Vector2 position = this.transform.position;
+        position = new Vector2(position.x + Time.deltaTime * direction * movementSpeed, position.y);
+        transform.position = position;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Projectile")
@@ -31,13 +45,23 @@ public class Enemy : MonoBehaviour
             Destroy(collision.gameObject);
             health -= 1;
         }
+
+        else if(collision.gameObject.tag == "Player")
+        {
+            GameManager.PlayerDeath?.Invoke();
+            collision.gameObject.SetActive(false);
+        }
     }
-    void EnemyKilled()
+
+    void CheckHealth()
     {
-        Destroy(gameObject);
-        score += 50;
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+            GameManager.EnemyDeath?.Invoke();
+        }
     }
-    
+
     float CalculateHealth()
     {
         return (float)health / maxHealth;

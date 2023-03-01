@@ -1,26 +1,36 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-/*    [SerializeField] public Enemy enemyPrefab;*/
+    public Enemy[] enemyPrefab;
 
     void Start()
     {
-        StartCoroutine(Spawn());
+        StartCoroutine(Spawn(0));
     }
     // Update is called once per frame
-    IEnumerator Spawn()
+    IEnumerator Spawn(int type)
     {
         while (true)
         {
-            int randomX = Random.Range(-10, 13);
-            Vector3 spawnPoint = new Vector3(randomX, 6, 0);
-
-            /*        Instantiate(enemyPrefab, spawnPoint, Quaternion.identity);*/
-            Enemy newEnemy = Instantiate(Resources.Load("Enemy", typeof(GameObject)), spawnPoint, Quaternion.identity) as Enemy;
+            Vector2 spawnPoint = new Vector2(transform.position.x,transform.position.y - 2);
+            Enemy enemyToSpawn = enemyPrefab[type];
+            Instantiate(enemyToSpawn, spawnPoint, Quaternion.identity);
             yield return new WaitForSeconds(10f);
         }
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Projectile")
+        {
+            GameManager.score += 300;
+            for (int i = 0; i <= 3; i++)
+            {
+                Instantiate(enemyPrefab[0], transform.position, Quaternion.identity);
+            }
+            gameObject.SetActive(false);
+        }
+    }
+
 }

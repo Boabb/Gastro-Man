@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -11,11 +9,6 @@ public class Weapon : MonoBehaviour
     [SerializeField] public int currentTank = 100;
     public int maxTank { get; set; } = 100;
 
-    public void Update()
-    {
-        
-    }
-    // Start is called before the first frame update
     public void Fire()
     {
         if (currentTank > 0)

@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    
     [SerializeField] public GameObject firePoint;
     [SerializeField] public Camera sceneCamera;
     [SerializeField] private Weapon weapon;
-    [SerializeField] private float movementSpeed = 15f;
-    [SerializeField] public float jumpForce = 10f;
+    [SerializeField] private float movementSpeed = 15f, jumpForce = 10f;
     private Rigidbody2D body;
     bool onground = true;
-    Vector2 moveDirection;
-    Vector2 mousePosition;
+    Vector2 moveDirection, mousePosition;
 
     private void Awake()
     {
@@ -25,7 +22,6 @@ public class Player : MonoBehaviour
     {
         float moveX = Input.GetAxisRaw("Horizontal");
 
-        
         moveDirection = new Vector2(moveX,0).normalized;
         mousePosition = sceneCamera.ScreenToWorldPoint(Input.mousePosition);
 
@@ -33,7 +29,6 @@ public class Player : MonoBehaviour
         {
             Jump();
         }
-
 
         if (Input.GetKey(KeyCode.R))
         {
@@ -57,7 +52,7 @@ public class Player : MonoBehaviour
             if (Input.GetMouseButton(0))
             {
                 weapon.Fire();
-                yield return new WaitForSeconds(0.03f);
+                yield return new WaitForSeconds(0.06f);
             }
             yield return null;
         }
@@ -81,11 +76,15 @@ public class Player : MonoBehaviour
             weapon.AddAmmo(weapon.maxTank);
             Destroy(collision.gameObject);
         }
+        if (collision.gameObject.tag == "Finish")
+        {
+            GameManager.PlayerExit?.Invoke();
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.tag == "Ground" && onground)
         {
             onground = false;
         }
