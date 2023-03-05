@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public int problemsEliminated = 0;
-    public GameObject[] problems;
+    int problemsEliminated = 0;
+    GameObject[] problems;
 
     void Start()
     {
@@ -14,11 +12,7 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Projectile")
-        {
-
-        }
-        else if (collision.gameObject.tag == "Problem")
+        if (collision.gameObject.tag == "Problem")
         {
             problemsEliminated++;
             if (problemsEliminated == problems.Length)

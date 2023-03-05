@@ -15,10 +15,10 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Obstacle
+  - Enemy
+  - Projectile
+  - Player
   - 
   - 
   - 
@@ -42,6 +42,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 3780182019
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

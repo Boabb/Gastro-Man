@@ -11,13 +11,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject UI, victoryUI, gameOverUI;
     [SerializeField] public TextMeshProUGUI ammoText, scoreText;
     [SerializeField] public Weapon weapon;
-    [SerializeField] public GameObject finish;
+    [SerializeField] public Finish finish;
 
     private void Start()
     {
         scoreText.text = "0";
         EnemyDeath += OnEnemyKilled;
-        ProblemsCleared += OnProblemsCleared;
         PlayerExit += OnPlayerExit;
         PlayerDeath += OnPlayerDeath;
     }
@@ -64,24 +63,17 @@ public class GameManager : MonoBehaviour
         score += 50;
     }
 
-    void OnProblemsCleared()
-    {
-        finish?.SetActive(true);
-    }
-
     void OnPlayerExit()
     {
         UI.SetActive(false);
         victoryUI.SetActive(true);
         Time.timeScale = 0;
-        finish?.SetActive(false);
     }
 
     void OnPlayerDeath()
     {
         UI.SetActive(false);
         gameOverUI.SetActive(true);
-        finish?.SetActive(false);
         Time.timeScale = 0;
         gameOver = true;
     }
