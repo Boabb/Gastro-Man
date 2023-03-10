@@ -4,7 +4,7 @@ using Pathfinding;
 
 public class Enemy : MonoBehaviour
 {
-    int health = 10, maxHealth = 10;
+    int health = 5, maxHealth = 5;
     public float speed = 100f, nextWaypointDistance = 3f;
     public GameObject healthBarUI;
     public Slider healthSlider;
@@ -12,7 +12,6 @@ public class Enemy : MonoBehaviour
 
     Path path;
     int currentWaypoint = 0;
-    bool reachedEndOfPath;
 
     Seeker seeker;
     Rigidbody2D rb;
@@ -24,8 +23,8 @@ public class Enemy : MonoBehaviour
         enemyGFX = GetComponentInChildren<SpriteRenderer>().transform;
         target = FindObjectOfType<Player>().transform;
 
-        InvokeRepeating("UpdatePath", 0f, .5f);
-        speed = Random.Range(200f, 450f);
+        InvokeRepeating("UpdatePath", 0f, 3f);
+        speed = Random.Range(50f, 200f);
         healthSlider.value = CalculateHealth();
     }
 
@@ -42,12 +41,21 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Projectile")
+        if (collision.gameObject.name == "Gastro Liquid(Clone)")
         {
             Destroy(collision.gameObject);
             health -= 1;
         }
-
+        if (collision.gameObject.name == "Antibiotic(Clone)" && gameObject.tag == "Virus")
+        {
+            Destroy(collision.gameObject);
+            health -= 1;
+        }
+        else if (collision.gameObject.name == "Anasthetic(Clone)" && gameObject.tag == "Bacteria")
+        {
+            Destroy(collision.gameObject);
+            health -= 1;
+        }
         else if(collision.gameObject.tag == "Player")
         {
             GameManager.PlayerDeath?.Invoke();
@@ -85,12 +93,7 @@ public class Enemy : MonoBehaviour
         }
         if (currentWaypoint >= path.vectorPath.Count)
         {
-            reachedEndOfPath = true;
             return;
-        }
-        else
-        {
-            reachedEndOfPath = false;
         }
 
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;

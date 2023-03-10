@@ -6,12 +6,11 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static Action EnemyDeath, ProblemsCleared, PlayerExit, PlayerDeath;
-    public static int score = 0;
+    public static int score = 0, enemiesAlive = 0;
     bool gameOver = false;
     [SerializeField] public GameObject UI, victoryUI, gameOverUI;
-    [SerializeField] public TextMeshProUGUI ammoText, scoreText;
+    [SerializeField] public TextMeshProUGUI ammoText, scoreText, enemyText;
     [SerializeField] public Weapon weapon;
-    [SerializeField] public Finish finish;
 
     private void Start()
     {
@@ -25,15 +24,8 @@ public class GameManager : MonoBehaviour
     {
         UpdateScoreText();
         UpdateAmmoText();
-        if(gameOver && Input.GetKey(KeyCode.Return))
-        {
-            Time.timeScale = 1.0f;
-            SceneManager.LoadScene("Level1");
-            gameOver = false;
-            score = 0;
-            UpdateScoreText();
-            PlayerDeath -= OnPlayerDeath;
-        }
+        RetryCheck();
+        UpdateEnemyText();
     }
 
     void UpdateScoreText()
@@ -44,18 +36,27 @@ public class GameManager : MonoBehaviour
     void UpdateAmmoText()
     {
         ammoText.text = $"{weapon.currentTank} / {weapon.maxTank}";
-        if (weapon.currentTank > weapon.maxTank)
+        Color ammoColor = weapon.ammoType.GetComponent<SpriteRenderer>().color;
+        ammoText.color = ammoColor;
+    }
+
+    void RetryCheck()
+    {
+        if (gameOver && Input.GetKey(KeyCode.Return))
         {
-            ammoText.color = Color.cyan;
+            Time.timeScale = 1.0f;
+            SceneManager.LoadScene("Level1", LoadSceneMode.Single);
+            gameOver = false;
+            score = 0;
+            UpdateScoreText();
+            PlayerDeath -= OnPlayerDeath;
         }
-        else if (weapon.currentTank <= 25)
-        {
-            ammoText.color = Color.grey;
-        }
-        else
-        {
-            ammoText.color = Color.green;
-        }
+    }
+
+    void UpdateEnemyText()
+    {
+        enemiesAlive = FindObjectsOfType<Enemy>().Length;
+        enemyText.text = enemiesAlive.ToString();
     }
 
     void OnEnemyKilled()

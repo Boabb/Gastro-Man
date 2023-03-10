@@ -5,9 +5,16 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
-  - Projectile
   - Medicine
+  - Acid
+  - Cyst
   - Problem
+  - Antibiotic
+  - Gastro Liquid
+  - Bacteria
+  - Virus
+  - Infection
+  - Projectile
   layers:
   - Default
   - TransparentFX

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &8597122809042575848
+--- !u!1001 &9140375343909635682
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 429347703635793767, guid: a07d67f750ddcd64797ef1ccff26dab2, type: 3}
       propertyPath: m_Name
-      value: Infection
+      value: Cyst
       objectReference: {fileID: 0}
     - target: {fileID: 429347703635793767, guid: a07d67f750ddcd64797ef1ccff26dab2, type: 3}
       propertyPath: m_TagString
@@ -17,15 +17,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 429347703635793769, guid: a07d67f750ddcd64797ef1ccff26dab2, type: 3}
       propertyPath: m_Color.b
-      value: 0.13626689
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 429347703635793769, guid: a07d67f750ddcd64797ef1ccff26dab2, type: 3}
       propertyPath: m_Color.g
-      value: 0.21698111
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 429347703635793769, guid: a07d67f750ddcd64797ef1ccff26dab2, type: 3}
       propertyPath: m_Color.r
-      value: 0.064821385
+      value: 0.764151
       objectReference: {fileID: 0}
     - target: {fileID: 429347703635793770, guid: a07d67f750ddcd64797ef1ccff26dab2, type: 3}
       propertyPath: prefabs.Array.size

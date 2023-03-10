@@ -3,17 +3,24 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] GameObject bulletPrefab;
-    [SerializeField] Transform firePoint;
-    [SerializeField] float fireForce = 20f;
-    [SerializeField] public int currentTank = 100;
+    public Projectile[] prefabs;
+    public Projectile ammoType;
+    Transform firePoint;
+
+    [Header("Weapon Stats")]
+    public float fireForce = 20f;
+    public int currentTank = 0;
     public int maxTank { get; set; } = 100;
 
+    private void Start()
+    {
+        firePoint = GetComponentInChildren<Transform>();
+    }
     public void Fire()
     {
         if (currentTank > 0)
         {
-            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            Projectile bullet = Instantiate(ammoType, firePoint.position, firePoint.rotation);
             bullet.GetComponent<Rigidbody2D>().AddForce(firePoint.up * fireForce, ForceMode2D.Impulse);
             currentTank --;
         }
@@ -37,6 +44,23 @@ public class Weapon : MonoBehaviour
             currentTank--;
         }
         yield return null;
+    }
+
+    public void ChangeAmmoType(string ammoPickup)
+    {
+        if (ammoPickup == "Gastro Liquid")
+        {
+            ammoType = prefabs[0];
+        }
+        else if (ammoPickup == "Antibiotic")
+        {
+            ammoType = prefabs[1];
+        }
+        else if(ammoPickup == "Anasthetic")
+        {
+            ammoType = prefabs[2];
+            Debug.Log("anasthtic set");
+        }
     }
 
     public void AddAmmo(int increment)
