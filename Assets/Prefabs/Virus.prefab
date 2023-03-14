@@ -287,8 +287,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 250
   nextWaypointDistance: 2
+  gracePeriod: 0.5
   healthBarUI: {fileID: 7452968427984323140}
   healthSlider: {fileID: 6112116140002998013}
+  enemyGFX:
+  - {fileID: 21300000, guid: 9980d62dc1e88da4b8948e5cd116f33a, type: 3}
+  - {fileID: 21300000, guid: d30693c67ae607947905e8e5af968a78, type: 3}
+  - {fileID: 21300000, guid: d30693c67ae607947905e8e5af968a78, type: 3}
 --- !u!114 &951420166
 MonoBehaviour:
   m_ObjectHideFlags: 0

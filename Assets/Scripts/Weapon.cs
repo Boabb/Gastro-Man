@@ -22,6 +22,7 @@ public class Weapon : MonoBehaviour
         {
             Projectile bullet = Instantiate(ammoType, firePoint.position, firePoint.rotation);
             bullet.GetComponent<Rigidbody2D>().AddForce(firePoint.up * fireForce, ForceMode2D.Impulse);
+            GameManager.PlaySound("playershoot");
             currentTank --;
         }
     }
@@ -30,20 +31,6 @@ public class Weapon : MonoBehaviour
     {
         int reloadAmount = maxTank - currentTank;
         currentTank += reloadAmount;
-    }
-
-    IEnumerator DecreaseOverfill()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(1f);
-            if (currentTank <= 100)
-            {
-                break;
-            }
-            currentTank--;
-        }
-        yield return null;
     }
 
     public void ChangeAmmoType(string ammoPickup)
@@ -68,7 +55,7 @@ public class Weapon : MonoBehaviour
         currentTank += increment;
         if (currentTank > 100)
         {
-            StartCoroutine(DecreaseOverfill());
+            currentTank = 100;
         }
     }
 }

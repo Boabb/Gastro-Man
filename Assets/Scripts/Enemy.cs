@@ -4,14 +4,16 @@ using Pathfinding;
 
 public class Enemy : MonoBehaviour
 {
-    int health = 5, maxHealth = 5;
-    public float speed = 100f, nextWaypointDistance = 3f;
+    int health = 5, maxHealth = 5, currentWaypoint = 0;
+    public float speed = 100f, nextWaypointDistance = 3f, gracePeriod = .5f;
     public GameObject healthBarUI;
     public Slider healthSlider;
-    Transform target, enemyGFX;
+    public Sprite[] enemyGFX;
+    Transform target;
+    SpriteRenderer currentGFX;
 
     Path path;
-    int currentWaypoint = 0;
+    
 
     Seeker seeker;
     Rigidbody2D rb;
@@ -20,11 +22,11 @@ public class Enemy : MonoBehaviour
     {
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
-        enemyGFX = GetComponentInChildren<SpriteRenderer>().transform;
+        currentGFX = GetComponentInChildren<SpriteRenderer>();
         target = FindObjectOfType<Player>().transform;
 
-        InvokeRepeating("UpdatePath", 0f, 3f);
-        speed = Random.Range(50f, 200f);
+        InvokeRepeating("UpdatePath", gracePeriod, .5f);
+        speed = Random.Range(50, 150);
         healthSlider.value = CalculateHealth();
     }
 
@@ -32,6 +34,7 @@ public class Enemy : MonoBehaviour
     {
         CheckHealth();
         Pathing();
+        UpdateDirection();
     }
 
     private void LateUpdate()
@@ -43,21 +46,25 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.name == "Gastro Liquid(Clone)")
         {
+            GameManager.PlaySound("enemyhit");
             Destroy(collision.gameObject);
             health -= 1;
         }
         if (collision.gameObject.name == "Antibiotic(Clone)" && gameObject.tag == "Virus")
         {
+            GameManager.PlaySound("enemyhit");
             Destroy(collision.gameObject);
             health -= 1;
         }
         else if (collision.gameObject.name == "Anasthetic(Clone)" && gameObject.tag == "Bacteria")
         {
+            GameManager.PlaySound("enemyhit");
             Destroy(collision.gameObject);
             health -= 1;
         }
         else if(collision.gameObject.tag == "Player")
         {
+            GameManager.PlaySound("death");
             GameManager.PlayerDeath?.Invoke();
             collision.gameObject.SetActive(false);
         }
@@ -67,8 +74,8 @@ public class Enemy : MonoBehaviour
     {
         if (health <= 0)
         {
+            GameManager.PlaySound("enemydeath");
             Destroy(gameObject);
-            GameManager.EnemyDeath?.Invoke();
         }
     }
 
@@ -107,15 +114,6 @@ public class Enemy : MonoBehaviour
         {
             currentWaypoint++;
         }
-
-        if (force.x >= 0.01f)
-        {
-            enemyGFX.localScale = new Vector3(-1f, 1f, 1f);
-        }
-        else if (force.x <= 0.01f)
-        {
-            enemyGFX.localScale = new Vector3(1f, 1f, 1f);
-        }
     }
 
     void OnPathComplete(Path p)
@@ -124,6 +122,22 @@ public class Enemy : MonoBehaviour
         { 
             path = p;
             currentWaypoint = 0;
+        }
+    }
+
+    void UpdateDirection()
+    {
+        if (rb.velocity.x >= 0.01f)
+        {
+            currentGFX.sprite = enemyGFX[2];
+        }
+        else if (rb.velocity.x <= -0.01f)
+        {
+            currentGFX.sprite = enemyGFX[0];
+        }
+        else
+        {
+            currentGFX.sprite = enemyGFX[1];
         }
     }
 }

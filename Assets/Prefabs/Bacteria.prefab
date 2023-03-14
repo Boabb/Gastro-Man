@@ -149,7 +149,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2fcc95e66c739d24bae68ec1aeb490b5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3142c9edd09311d48b2c2106637ab8ec, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -287,8 +287,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 250
   nextWaypointDistance: 2
+  gracePeriod: 1
   healthBarUI: {fileID: 7452968427984323140}
   healthSlider: {fileID: 6112116140002998013}
+  enemyGFX:
+  - {fileID: 21300000, guid: 2fcc95e66c739d24bae68ec1aeb490b5, type: 3}
+  - {fileID: 21300000, guid: 3142c9edd09311d48b2c2106637ab8ec, type: 3}
+  - {fileID: 21300000, guid: d484ac4199ecc6f47949f72e638b05b4, type: 3}
 --- !u!114 &951420166
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
+        // assigns the weapon attached to the player to a variable
         weapon = GetComponentInChildren<Weapon>();
         animator = GetComponentInChildren<Animator>();
         sceneCamera = FindObjectOfType<Camera>();
@@ -28,27 +29,22 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        float moveX = Input.GetAxisRaw("Horizontal");
 
+        float moveX = Input.GetAxisRaw("Horizontal");
         moveDirection = new Vector2(moveX,0).normalized;
+
+        // sets the position of the mouse of the screen to a Vector2 variable
         mousePosition = sceneCamera.ScreenToWorldPoint(Input.mousePosition);
 
+        // loads the Jump() method if space is pressed and the player is allowed to jump
         if(Input.GetKeyDown(KeyCode.Space) && canjump)
         {
             Jump();
         }
-
-        if(body.velocity.y < 0)
-        {
-            body.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-        }
-        else if (body.velocity.y > 0 && !Input.GetKey(KeyCode.Space))
-        {
-            body.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultipler - 1) * Time.deltaTime;
-        }
     }
     private void LateUpdate()
     {
+        // moves the player in the direction pressed scaled by a public speed variable 
         body.velocity = new Vector2((moveDirection.x * movementSpeed), body.velocity.y);
 
         Vector2 aimDirection = mousePosition - body.position;
@@ -71,8 +67,11 @@ public class Player : MonoBehaviour
             aimAngle = Mathf.Clamp(aimAngle, -180, -150);
             aimAngle -= 180;
         }
+
+        // rotates the weapon around the player and points it towards the moust location
         firePoint.transform.rotation = Quaternion.Euler(firePoint.transform.rotation.x, firePoint.transform.rotation.y, aimAngle);
 
+        // set jump/not jumping animation
         animator.SetBool("isJumping", jumping);
     }
 
@@ -80,9 +79,13 @@ public class Player : MonoBehaviour
     {
         while(true)
         {
+            // checks if the player has pressed left click
             if (Input.GetMouseButton(0))
             {
+                // loads the Fire() method in the weapon script
                 weapon.Fire();
+
+                // controls cooldown between shots fired
                 yield return new WaitForSeconds(0.06f);
             }
             yield return null;
@@ -94,10 +97,22 @@ public class Player : MonoBehaviour
         body.velocity = new Vector3(body.velocity.x, jumpForce);
         canjump = false;
         jumping = true;
+
+        // faster falling
+        if (body.velocity.y < 0)
+        {
+            body.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        }
+        // peak height of jump decreased if the player taps space
+        else if (body.velocity.y > 0 && !Input.GetKey(KeyCode.Space))
+        {
+            body.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultipler - 1) * Time.deltaTime;
+        }
     }
 
     void OnMedicinePickup(GameObject pickup)
     {
+        // changes the ammo type to the respective ammo pool the player has collided with
         if (pickup.name == "Gastro Pool")
         {
             weapon.ChangeAmmoType("Gastro Liquid");
@@ -112,6 +127,7 @@ public class Player : MonoBehaviour
         }
         weapon.AddAmmo(weapon.maxTank);
         Destroy(pickup);
+        GameManager.PlaySound("reload");
         Debug.Log($"You picked up: {pickup.name}");
     }
 
@@ -134,8 +150,17 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Ground" && body.velocity.y == 0 || collision.gameObject.tag == "Problem" && body.velocity.y == 0)
+        {
+            canjump = true;
+            jumping = false;
+        }
+    }
     private void OnCollisionExit2D(Collision2D collision)
     {
+        // disallows the player to jump if they are already in the air
         if (collision.gameObject.tag == "Ground" && body.velocity.y != 0)
         {
             canjump = false;
