@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     public Enemy[] enemiesAlive;
     public static bool gameOver = false;
     bool canPlaySound;
-    [SerializeField] public GameObject UI, victoryUI, gameOverUI;
+    public GameObject UI, victoryUI, gameOverUI;
     [SerializeField] public TextMeshProUGUI ammoText, enemyText;
     [SerializeField] public Weapon weapon;
 

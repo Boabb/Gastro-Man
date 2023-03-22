@@ -3,20 +3,28 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    // reference to the player's fire point and graphics (used for weapon aiming)
     [SerializeField] public GameObject firePoint, playerGFX;
-    [SerializeField] private float movementSpeed = 15f, jumpForce = 10f, fallMultiplier = 2.5f ,lowJumpMultipler = 2f;
+
+    // movement and jump related variables that can be tweaked in the Unity Editor
+    [SerializeField] private float movementSpeed = 15f, jumpForce = 10f, fallMultiplier = 2.5f, lowJumpMultipler = 2f;
+
+    // reference to the player's rigidbody, animator, weapon, and scene camera
     Rigidbody2D body;
     Animator animator;
     Weapon weapon;
     Camera sceneCamera;
-    
+
+    // direction in which the player is moving and the position of the mouse on screen
     Vector2 moveDirection, mousePosition;
+
+    // flags for whether the player is currently jumping and if they are able to jump
     bool jumping, canjump;
 
     private void Awake()
     {
+        // retrieve references to the rigidbody, weapon, animator, and scene camera components
         body = GetComponent<Rigidbody2D>();
-        // assigns the weapon attached to the player to a variable
         weapon = GetComponentInChildren<Weapon>();
         animator = GetComponentInChildren<Animator>();
         sceneCamera = FindObjectOfType<Camera>();
@@ -24,32 +32,38 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        // start shooting coroutine to handle player shooting
         StartCoroutine(PlayerShooting());
     }
 
     private void Update()
     {
-
+        // retrieve the player's horizontal movement input and normalize it
         float moveX = Input.GetAxisRaw("Horizontal");
-        moveDirection = new Vector2(moveX,0).normalized;
+        moveDirection = new Vector2(moveX, 0).normalized;
 
-        // sets the position of the mouse of the screen to a Vector2 variable
+        // set the position of the mouse on screen to a Vector2 variable
         mousePosition = sceneCamera.ScreenToWorldPoint(Input.mousePosition);
 
-        // loads the Jump() method if space is pressed and the player is allowed to jump
-        if(Input.GetKeyDown(KeyCode.Space) && canjump)
+        // load the Jump() method if the player presses space and is allowed to jump
+        if (Input.GetKeyDown(KeyCode.Space) && canjump)
         {
             Jump();
         }
     }
+
     private void LateUpdate()
     {
-        // moves the player in the direction pressed scaled by a public speed variable 
+        // move the player horizontally according to the input direction and speed
         body.velocity = new Vector2((moveDirection.x * movementSpeed), body.velocity.y);
 
+        // calculate the direction the weapon should point based on the mouse's position
         Vector2 aimDirection = mousePosition - body.position;
 
+        // calculate the angle the weapon should be at based on the aim direction
         float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+
+        // flip the player graphics and
         if (aimAngle >= -90 && aimAngle <= 90) 
         {
             playerGFX.transform.localScale = firePoint.transform.localScale = new Vector3(1f, 1f, 1f);
