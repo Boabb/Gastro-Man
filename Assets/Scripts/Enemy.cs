@@ -13,25 +13,30 @@ public class Enemy : MonoBehaviour
     SpriteRenderer currentGFX;
 
     Path path;
-    
 
     Seeker seeker;
     Rigidbody2D rb;
 
     private void Start()
     {
+        // Get references to the Seeker and Rigidbody2D components attached to the enemy object
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
+        // Get a reference to the SpriteRenderer component on a child object of the enemy object
         currentGFX = GetComponentInChildren<SpriteRenderer>();
+        // Find the player object in the scene and set it as the target
         target = FindObjectOfType<Player>().transform;
-
+        // Start a repeating method to update the enemy's path
         InvokeRepeating("UpdatePath", gracePeriod, .5f);
+        // Set the enemy's speed to a random value between 50 and 150
         speed = Random.Range(50, 150);
+        // Update the value of the health slider to reflect the enemy's current health
         healthSlider.value = CalculateHealth();
     }
 
     private void Update()
     {
+        // Check the enemy's health and update its pathing and direction
         CheckHealth();
         Pathing();
         UpdateDirection();
@@ -39,30 +44,35 @@ public class Enemy : MonoBehaviour
 
     private void LateUpdate()
     {
+        // Update the value of the health slider to reflect the enemy's current health
         healthSlider.value = CalculateHealth();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // If the enemy collides with a Gastro Liquid projectile, decrease its health and play a hit sound
         if (collision.gameObject.name == "Gastro Liquid(Clone)")
         {
             GameManager.PlaySound("enemyhit");
             Destroy(collision.gameObject);
             health -= 1;
         }
+        // If the enemy collides with an Antibiotic projectile and the enemy is a virus, decrease its health and play a hit sound
         if (collision.gameObject.name == "Antibiotic(Clone)" && gameObject.tag == "Virus")
         {
             GameManager.PlaySound("enemyhit");
             Destroy(collision.gameObject);
             health -= 1;
         }
+        // If the enemy collides with an Anasthetic projectile and the enemy is a bacteria, decrease its health and play a hit sound
         else if (collision.gameObject.name == "Anasthetic(Clone)" && gameObject.tag == "Bacteria")
         {
             GameManager.PlaySound("enemyhit");
             Destroy(collision.gameObject);
             health -= 1;
         }
-        else if(collision.gameObject.tag == "Player")
+        // If the enemy collides with the player, play a death sound, trigger the player's death event, and deactivate the player object
+        else if (collision.gameObject.tag == "Player")
         {
             GameManager.PlaySound("death");
             GameManager.PlayerDeath?.Invoke();
@@ -70,71 +80,77 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    // This method checks the enemy's health and destroys the enemy if its health falls to or below 0
     void CheckHealth()
     {
         if (health <= 0)
         {
-            GameManager.PlaySound("enemydeath");
-            Destroy(gameObject);
+            GameManager.PlaySound("enemydeath"); // Play a sound effect for the enemy's death
+            Destroy(gameObject); // Destroy the enemy game object
         }
     }
 
+    // This method calculates the current health of the enemy as a float between 0 and 1
     float CalculateHealth()
     {
         return (float)health / maxHealth;
     }
 
+    // This method updates the enemy's path by using the Seeker component to find a path to the target player object
     void UpdatePath()
     {
-        if (seeker.IsDone())
+        if (seeker.IsDone()) // If the Seeker component has finished finding a path
         {
-            seeker.StartPath(rb.position, target.position, OnPathComplete);
+            seeker.StartPath(rb.position, target.position, OnPathComplete); // Start finding a new path from the enemy's current position to the target player's position
         }
     }
 
     void Pathing()
     {
-        if (path == null)
-        {
-            return;
-        }
-        if (currentWaypoint >= path.vectorPath.Count)
+        // If there is no path or the current waypoint is beyond the end of the path, return and do nothing
+        if (path == null || currentWaypoint >= path.vectorPath.Count)
         {
             return;
         }
 
+        // Determine the direction to move towards the current waypoint and apply a force in that direction
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
         Vector2 force = direction * speed * Time.deltaTime;
-
         rb.AddForce(force);
 
+        // If the enemy is close enough to the current waypoint, move to the next waypoint
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
-
         if (distance < nextWaypointDistance)
         {
             currentWaypoint++;
         }
     }
 
+    // This method is called when the Seeker component finishes finding a path
     void OnPathComplete(Path p)
     {
-        if(!p.error)
-        { 
+        // If there was no error finding the path, update the enemy's path and set the current waypoint to the first waypoint
+        if (!p.error)
+        {
             path = p;
             currentWaypoint = 0;
         }
     }
 
+    // This method updates the enemy's direction based on its velocity
     void UpdateDirection()
     {
+        // If the enemy is moving to the right, set its sprite to face right
         if (rb.velocity.x >= 0.01f)
         {
             currentGFX.sprite = enemyGFX[2];
         }
+        // If the enemy is moving to the left, set its sprite to face left
         else if (rb.velocity.x <= -0.01f)
         {
             currentGFX.sprite = enemyGFX[0];
         }
+        // Else the enemy is almost idle so set the sprite to idle
         else
         {
             currentGFX.sprite = enemyGFX[1];
