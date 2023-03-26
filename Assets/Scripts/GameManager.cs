@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,10 +10,11 @@ public class GameManager : MonoBehaviour
     public static Action PlayerExit, PlayerDeath;
     static AudioSource audioSource;
     public Enemy[] enemiesAlive;
-    public static bool gameOver = false;
-    bool canPlaySound;
-    public GameObject UI, victoryUI, gameOverUI;
-    [SerializeField] public TextMeshProUGUI ammoText, enemyText;
+    public EnemySpawner[] problemsLeft;
+    public static bool gameOver = false, enemyHasSpawned;
+    public GameObject ui, victoryUI, gameOverUI, finish;
+    static int currentLevel = 1;
+    [SerializeField] public TextMeshProUGUI ammoText, enemyText, problemsText;
     [SerializeField] public Weapon weapon;
 
     private void Awake()
@@ -42,17 +44,25 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        // Find all active Enemy objects in the scene
+        // Assign all active Enemy and EnemySpawner objects in the scene to two seperate arrays
         enemiesAlive = FindObjectsOfType<Enemy>();
+        problemsLeft = FindObjectsOfType<EnemySpawner>();
 
-        // Update the UI text for the ammo count
+        // Update the UI text for the ammo, number of remaining enemies and problems
         UpdateAmmoText();
+        UpdateEnemyText();
+        UpdateProblemText();
+
+        // Check if win condition is met
+        CheckWinCondition();
 
         // Check if the player is attempting to restart the game
         RetryCheck();
 
-        // Update the UI text for the number of remaining enemies
-        UpdateEnemyText();
+        if (enemyHasSpawned)
+        {
+            StartCoroutine(EnemySpawnCooldown());
+        }
     }
 
     // Update the UI text for the ammo count
@@ -73,6 +83,46 @@ public class GameManager : MonoBehaviour
         ammoText.text = $"{weapon.currentTank} / {weapon.maxTank}";
     }
 
+    void CheckWinCondition()
+    {
+        if (enemyText.color == Color.green && problemsText.color == Color.green)
+        {
+            finish.SetActive(true);
+        }
+        else
+        {
+            finish.SetActive(false);
+        }
+    }
+
+    // Update the UI text for the number of remaining enemies
+    void UpdateEnemyText()
+    {
+        if (enemiesAlive.Length <= 0)
+        {
+            enemyText.color = Color.green;
+        }
+        else
+        {
+            enemyText.color = Color.white;
+        }
+        
+        enemyText.text = $"Enemies Remaining: {enemiesAlive.Length}";
+    }
+
+    void UpdateProblemText()
+    {
+        if (problemsLeft.Length <= 0)
+        {
+            problemsText.color = Color.green;
+        }
+        else
+        {
+            problemsText.color = Color.white;
+        }
+        problemsText.text = $"Problems Remaining: {problemsLeft.Length}";
+    }
+
     // Check if the game is over and the player is attempting to restart
     void RetryCheck()
     {
@@ -82,10 +132,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Update the UI text for the number of remaining enemies
-    void UpdateEnemyText()
+    IEnumerator EnemySpawnCooldown()
     {
-        enemyText.text = enemiesAlive.Length.ToString();
+        yield return new WaitForSeconds(2);
+        enemyHasSpawned = false;
     }
 
     // Handle player victory
@@ -95,7 +145,7 @@ public class GameManager : MonoBehaviour
         GameManager.PlaySound("victory");
 
         // Disable the game UI and show the victory screen
-        UI.SetActive(false);
+        ui.SetActive(false);
         victoryUI.SetActive(true);
 
         // Freeze time to prevent any further game updates
@@ -109,7 +159,7 @@ public class GameManager : MonoBehaviour
         GameManager.PlaySound("gameover");
 
         // Disable the game UI and show the game over screen
-        UI.SetActive(false);
+        ui.SetActive(false);
         gameOverUI.SetActive(true);
 
         // Freeze time to prevent any further game updates
@@ -122,18 +172,31 @@ public class GameManager : MonoBehaviour
     // Restart the game
     void NewGame()
     {
+        PlayerDeath -= OnPlayerDeath;
         // Load the first level
-        SceneManager.LoadScene("Level1");
+        SceneManager.LoadScene($"Level{currentLevel}");
 
         // Reset the current ammo count to zero
         weapon.currentTank = 0;
 
         // Enable the game UI and hide the game over screen
-        UI.SetActive(true);
+        ui.SetActive(true);
         gameOverUI.SetActive(false);
+
+        //Unfreeze time
         Time.timeScale = 1.0f;
         gameOver = false;
-        PlayerDeath -= OnPlayerDeath;
+    }
+    public void NextLevel()
+    {
+        // Load the next level
+        SceneManager.LoadScene($"Level{currentLevel+1}");
+
+        // Reset the current ammo count to zero
+        weapon.currentTank = 0;
+
+        // Unfreeze time
+        Time.timeScale = 1.0f;
     }
 
     public static void PlaySound(string clip)

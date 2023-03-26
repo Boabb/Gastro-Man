@@ -9,8 +9,8 @@ public class EnemySpawner : MonoBehaviour
     // The current enemy prefab to spawn
     Enemy enemyToSpawn;
 
-    // The current health of the enemy
-    int health;
+    // The current health of the enemy spawner
+    public int health;
 
     // The spawn point for enemies
     Vector2 spawnPoint;
@@ -20,32 +20,28 @@ public class EnemySpawner : MonoBehaviour
         // Set the spawn point for enemies to be just below the spawner object
         spawnPoint = new Vector2(transform.position.x, transform.position.y - 1);
 
-        // If this spawner is for the "Cyst" enemy type
+        // If this spawner is the "Cyst" problem
         if (gameObject.name == "Cyst")
         {
             // Set the initial health to 5
             health = 5;
 
-            // Set the enemy prefab to be the first one in the array
+            // Set the enemy to be spawned to be the "Bacteria" enemy type
             enemyToSpawn = prefabs[0];
-
-            // Start spawning enemies of this type
-            StartCoroutine(Spawn(0));
-
         }
 
-        // If this spawner is for the "Infection" enemy type
+        // If this spawner is the "Infection" problem
         if (gameObject.name == "Infection")
         {
             // Set the initial health to 5
             health = 5;
 
-            // Set the enemy prefab to be the second one in the array
+            // Set the enemy to be spawned to be the "Virus" enemy type
             enemyToSpawn = prefabs[1];
-
-            // Start spawning enemies of this type
-            StartCoroutine(Spawn(1));
         }
+
+        // Start spawning enemies of "enemyToSpawn" type
+        StartCoroutine(SpawnEnemies());
     }
 
     private void Update()
@@ -65,25 +61,24 @@ public class EnemySpawner : MonoBehaviour
     }
 
     // Coroutine that spawns enemies of the given type
-    IEnumerator Spawn(int type)
+    IEnumerator SpawnEnemies()
     {
         // Loop indefinitely
         while (true)
         {
             // Generate a random number between 0 and 8
-            int randomNum2 = Random.Range(0, 8);
+            int randomNum2 = Random.Range(0, 9);
 
             // If the enemy's health is less than the random number
-            if (health < randomNum2)
+            if (health < randomNum2 && GameManager.enemyHasSpawned == false)
             {
                 // Spawn a new enemy of the given type at the spawn point
                 Instantiate(enemyToSpawn, spawnPoint, Quaternion.identity);
 
-                // Increase the enemy's health by 1
-                health++;
+                GameManager.enemyHasSpawned = true;
             }
 
-            // Wait for 5 seconds before spawning another enemy
+            // Wait for 5 seconds before trying to spawn another enemy
             yield return new WaitForSeconds(5f);
         }
 

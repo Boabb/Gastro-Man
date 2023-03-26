@@ -63,8 +63,7 @@ public class Player : MonoBehaviour
         // calculate the angle the weapon should be at based on the aim direction
         float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
 
-        // flip the player graphics and
-        if (aimAngle >= -90 && aimAngle <= 90) 
+        if (aimAngle >= -90 && aimAngle <= 90)
         {
             playerGFX.transform.localScale = firePoint.transform.localScale = new Vector3(1f, 1f, 1f);
             aimAngle = Mathf.Clamp(aimAngle, -30, 40);

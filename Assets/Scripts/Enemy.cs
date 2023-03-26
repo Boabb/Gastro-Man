@@ -19,6 +19,10 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
+        if (gameObject.name == "Bacteria(Clone)")
+        {
+            gracePeriod = 0f;
+        }
         // Get references to the Seeker and Rigidbody2D components attached to the enemy object
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
