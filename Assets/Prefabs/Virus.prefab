@@ -149,7 +149,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 9980d62dc1e88da4b8948e5cd116f33a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b369d0ddcf4697e4985ee7589d5a544e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -287,13 +287,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 250
   nextWaypointDistance: 2
-  gracePeriod: 0.5
   healthBarUI: {fileID: 7452968427984323140}
   healthSlider: {fileID: 6112116140002998013}
   enemyGFX:
-  - {fileID: 21300000, guid: 9980d62dc1e88da4b8948e5cd116f33a, type: 3}
-  - {fileID: 21300000, guid: d30693c67ae607947905e8e5af968a78, type: 3}
-  - {fileID: 21300000, guid: d30693c67ae607947905e8e5af968a78, type: 3}
+  - {fileID: 21300000, guid: 0c3aed165a4eefb4e9cc50c010bf251b, type: 3}
+  - {fileID: 21300000, guid: b369d0ddcf4697e4985ee7589d5a544e, type: 3}
+  - {fileID: 21300000, guid: e43d1997acd5a774e998f991c7b1e52f, type: 3}
+  - {fileID: 21300000, guid: 405ea1012b1a0eb479caba47bb3c7d6c, type: 3}
+  - {fileID: 21300000, guid: 4637c183be4b05f40bc6165beff709b9, type: 3}
+  - {fileID: 21300000, guid: 2cc6f767a959a18458199e8fca51b2bb, type: 3}
+  - {fileID: 21300000, guid: 2de854c7458c8f1419276124596180d4, type: 3}
 --- !u!114 &951420166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,7 +345,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!58 &8514221865930475444
 CircleCollider2D:
   m_ObjectHideFlags: 0

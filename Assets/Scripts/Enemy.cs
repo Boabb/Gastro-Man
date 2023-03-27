@@ -5,7 +5,7 @@ using Pathfinding;
 public class Enemy : MonoBehaviour
 {
     int health = 5, maxHealth = 5, currentWaypoint = 0;
-    public float speed = 100f, nextWaypointDistance = 3f, gracePeriod = .5f;
+    public float speed = 100f, nextWaypointDistance = 1f;
     public GameObject healthBarUI;
     public Slider healthSlider;
     public Sprite[] enemyGFX;
@@ -19,10 +19,6 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        if (gameObject.name == "Bacteria(Clone)")
-        {
-            gracePeriod = 0f;
-        }
         // Get references to the Seeker and Rigidbody2D components attached to the enemy object
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
@@ -31,7 +27,7 @@ public class Enemy : MonoBehaviour
         // Find the player object in the scene and set it as the target
         target = FindObjectOfType<Player>().transform;
         // Start a repeating method to update the enemy's path
-        InvokeRepeating("UpdatePath", gracePeriod, .5f);
+        InvokeRepeating("UpdatePath", 0f, .5f);
         // Set the enemy's speed to a random value between 50 and 150
         speed = Random.Range(50, 150);
         // Update the value of the health slider to reflect the enemy's current health
@@ -43,7 +39,7 @@ public class Enemy : MonoBehaviour
         // Check the enemy's health and update its pathing and direction
         CheckHealth();
         Pathing();
-        UpdateDirection();
+        AnimateSprite();
     }
 
     private void LateUpdate()
@@ -142,22 +138,35 @@ public class Enemy : MonoBehaviour
     }
 
     // This method updates the enemy's direction based on its velocity
-    void UpdateDirection()
+    void AnimateSprite()
     {
-        // If the enemy is moving to the right, set its sprite to face right
-        if (rb.velocity.x >= 0.01f)
+        if (rb.velocity.x >= 0.1f && rb.velocity.y >= 0.1f)
         {
-            currentGFX.sprite = enemyGFX[2];
+            currentGFX.sprite = enemyGFX[6];
         }
-        // If the enemy is moving to the left, set its sprite to face left
-        else if (rb.velocity.x <= -0.01f)
+        else if (rb.velocity.x >= 0.1f && rb.velocity.y <= -0.1f)
+        {
+            currentGFX.sprite = enemyGFX[1];
+        }
+        else if (rb.velocity.x >= 0.1f)
         {
             currentGFX.sprite = enemyGFX[0];
         }
-        // Else the enemy is almost idle so set the sprite to idle
+        else if (rb.velocity.x <= -0.1f && rb.velocity.y <= -0.1f)
+        {
+            currentGFX.sprite = enemyGFX[4];
+        }
+        else if (rb.velocity.x <= -0.1f && rb.velocity.y >= 0.1f)
+        {
+            currentGFX.sprite = enemyGFX[3];
+        }
+        else if (rb.velocity.x <= -0.1f)
+        {
+            currentGFX.sprite = enemyGFX[2];
+        }
         else
         {
-            currentGFX.sprite = enemyGFX[1];
+            currentGFX.sprite = enemyGFX[5];
         }
     }
 }

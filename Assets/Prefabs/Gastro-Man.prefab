@@ -358,7 +358,7 @@ MonoBehaviour:
   - {fileID: -1610505452855064471, guid: 1bd141d4fa2ff32489f048156ef0a0bb, type: 3}
   - {fileID: -1610505452855064471, guid: fb942d0f336523841b84127e001f9bfd, type: 3}
   ammoType: {fileID: -1610505452855064471, guid: fb942d0f336523841b84127e001f9bfd, type: 3}
-  fireForce: 10
+  fireForce: 5
   currentTank: 0
 --- !u!1 &8212195490744405912
 GameObject:
