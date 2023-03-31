@@ -13,8 +13,15 @@ public class EnemySpawner : MonoBehaviour
     public int health;
 
     // The spawn point for enemies
-    Vector2 spawnPoint;
+    Vector3 spawnPoint, playerSpawnPoint;
 
+    // Boolean for spawning enemies
+    public static bool playerHasMoved = false;
+
+    private void Awake()
+    {
+        playerSpawnPoint = FindObjectOfType<Player>().transform.position;
+    }
     void Start()
     {
         // Set the spawn point for enemies to be just below the spawner object
@@ -44,22 +51,6 @@ public class EnemySpawner : MonoBehaviour
         StartCoroutine(SpawnEnemies());
     }
 
-    private void Update()
-    {
-        // If the enemy's health has reached 0 or below
-        if (health <= 0)
-        {
-            // Spawn 3 new enemies of the same type at the same location
-            for (int i = 0; i < 3; i++)
-            {
-                Instantiate(enemyToSpawn, spawnPoint, Quaternion.identity);
-            }
-
-            // Destroy this enemy object
-            Destroy(gameObject);
-        }
-    }
-
     // Coroutine that spawns enemies of the given type
     IEnumerator SpawnEnemies()
     {
@@ -67,10 +58,10 @@ public class EnemySpawner : MonoBehaviour
         while (true)
         {
             // Generate a random number between 0 and 8
-            int randomNum2 = Random.Range(0, 9);
+            int randomNum = Random.Range(0, 9);
 
             // If the enemy's health is less than the random number
-            if (health < randomNum2 && GameManager.enemyHasSpawned == false)
+            if (GameManager.enemyHasSpawned == false && GameManager.enemiesAlive.Length < 5 && playerHasMoved)
             {
                 // Spawn a new enemy of the given type at the spawn point
                 Instantiate(enemyToSpawn, spawnPoint, Quaternion.identity);
@@ -82,6 +73,26 @@ public class EnemySpawner : MonoBehaviour
             yield return new WaitForSeconds(5f);
         }
 
+    }
+
+    void Update()
+    {
+        HasPlayerMoved();
+    }
+
+    void HasPlayerMoved()
+    {
+        if (FindObjectOfType<Player>() != null)
+        {
+            if (playerSpawnPoint == FindObjectOfType<Player>().transform.position)
+            {
+                playerHasMoved = false;
+            }
+            else
+            {
+                playerHasMoved = true;
+            }
+        }
     }
 
     // Called when the enemy collides with another object
@@ -107,6 +118,17 @@ public class EnemySpawner : MonoBehaviour
             // Decrease the enemy's health by 1
             health -= 1;
         }
-    }
+        // If the enemy's health has reached 0 or below
+        if (health <= 0)
+        {
+            // Spawn 3 new enemies of the same type at the same location
+            for (int i = 0; i < 3; i++)
+            {
+                Instantiate(enemyToSpawn, spawnPoint, Quaternion.identity);
+            }
 
+            // Destroy this enemy object
+            Destroy(gameObject);
+        }
+    }
 }

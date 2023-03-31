@@ -10,25 +10,16 @@ public class Player : MonoBehaviour
     [SerializeField] private float movementSpeed = 15f, jumpForce = 10f, fallMultiplier = 2.5f, lowJumpMultipler = 2f;
 
     // reference to the player's rigidbody, animator, weapon, and scene camera
-    Rigidbody2D body;
-    Animator animator;
-    Weapon weapon;
-    Camera sceneCamera;
+    Rigidbody2D body => GetComponent<Rigidbody2D>();
+    Animator animator => GetComponentInChildren<Animator>();
+    Weapon weapon => GetComponentInChildren<Weapon>();
+    Camera sceneCamera => FindObjectOfType<Camera>();
 
     // direction in which the player is moving and the position of the mouse on screen
     Vector2 moveDirection, mousePosition;
 
     // flags for whether the player is currently jumping and if they are able to jump
-    bool jumping, canjump;
-
-    private void Awake()
-    {
-        // retrieve references to the rigidbody, weapon, animator, and scene camera components
-        body = GetComponent<Rigidbody2D>();
-        weapon = GetComponentInChildren<Weapon>();
-        animator = GetComponentInChildren<Animator>();
-        sceneCamera = FindObjectOfType<Camera>();
-    }
+    public static bool jumping = false, canjump = true, canMove = true;
 
     private void Start()
     {
@@ -44,15 +35,19 @@ public class Player : MonoBehaviour
 
         // set the position of the mouse on screen to a Vector2 variable
         mousePosition = sceneCamera.ScreenToWorldPoint(Input.mousePosition);
+    }
 
-        // load the Jump() method if the player presses space and is allowed to jump
-        if (Input.GetKeyDown(KeyCode.Space) && canjump)
+    // allows all other actions to take place before considering movement
+    private void LateUpdate()
+    {
+        // checks if the player is allowed to move (gameover/victory/pause screens)
+        if (canMove)
         {
-            Jump();
+            PlayerMovement();
         }
     }
 
-    private void LateUpdate()
+    void PlayerMovement()
     {
         // move the player horizontally according to the input direction and speed
         body.velocity = new Vector2((moveDirection.x * movementSpeed), body.velocity.y);
@@ -62,8 +57,11 @@ public class Player : MonoBehaviour
 
         // calculate the angle the weapon should be at based on the aim direction
         float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
-
-        if (aimAngle >= -90 && aimAngle <= 90)
+        if (aimAngle == 180 || aimAngle == -180 || aimAngle == 0)
+        {
+            aimAngle = 0;
+        }
+        else if (aimAngle >= -90 && aimAngle <= 90)
         {
             playerGFX.transform.localScale = firePoint.transform.localScale = new Vector3(1f, 1f, 1f);
             aimAngle = Mathf.Clamp(aimAngle, -30, 40);
@@ -84,6 +82,12 @@ public class Player : MonoBehaviour
         // rotates the weapon around the player and points it towards the moust location
         firePoint.transform.rotation = Quaternion.Euler(firePoint.transform.rotation.x, firePoint.transform.rotation.y, aimAngle);
 
+        // load the Jump() method if the player presses space and is allowed to jump
+        if (Input.GetKeyDown(KeyCode.Space) && canjump)
+        {
+            Jump();
+        }
+
         // set jump/not jumping animation
         animator.SetBool("isJumping", jumping);
     }
@@ -99,7 +103,7 @@ public class Player : MonoBehaviour
                 weapon.Fire();
 
                 // controls cooldown between shots fired
-                yield return new WaitForSeconds(0.06f);
+                yield return new WaitForSeconds(0.08f);
             }
             yield return null;
         }

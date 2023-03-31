@@ -1,21 +1,28 @@
 using System;
 using System.Collections;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static AudioClip walkSound, deathSound, enemyHitSound, enemyDeathSound, playerShootSound, victorySound, gameOverSound, reloadSound;
-    public static Action PlayerExit, PlayerDeath;
     static AudioSource audioSource;
-    public Enemy[] enemiesAlive;
-    public EnemySpawner[] problemsLeft;
-    public static bool gameOver = false, enemyHasSpawned;
-    public GameObject ui, victoryUI, gameOverUI, finish;
-    static int currentLevel = 1;
+
+    public static Action PlayerExit, PlayerDeath;
+
+    public static Enemy[] enemiesAlive => FindObjectsOfType<Enemy>();
+    public static EnemySpawner[] problemsLeft => FindObjectsOfType<EnemySpawner>();
+
+    public GameObject ui, victoryUI, gameOverUI, pauseMenu, finish;
+
     [SerializeField] public TextMeshProUGUI ammoText, enemyText, problemsText;
     [SerializeField] public Weapon weapon;
+
+    public static bool gameOver = false, enemyHasSpawned, gameIsPaused = false;
+    public static string currentLevelName => SceneManager.GetActiveScene().name;
+    public static int currentLevel = 1;
 
     private void Awake()
     {
@@ -29,11 +36,11 @@ public class GameManager : MonoBehaviour
         gameOverSound = Resources.Load<AudioClip>("gameover");
         reloadSound = Resources.Load<AudioClip>("reload");
 
-        // Get the AudioSource component attached to the same GameObject
+        // Get the AudioSource component attached to this GameObject
         audioSource = GetComponent<AudioSource>();
     }
 
-    private void Start()
+    void Start()
     {
         // Allow the game over and victory effects to take place
 
@@ -42,12 +49,8 @@ public class GameManager : MonoBehaviour
         PlayerDeath += OnPlayerDeath; // Subscribe the OnPlayerDeath method to the PlayerDeath Action
     }
 
-    private void Update()
+    void Update()
     {
-        // Assign all active Enemy and EnemySpawner objects in the scene to two seperate arrays
-        enemiesAlive = FindObjectsOfType<Enemy>();
-        problemsLeft = FindObjectsOfType<EnemySpawner>();
-
         // Update the UI text for the ammo, number of remaining enemies and problems
         UpdateAmmoText();
         UpdateEnemyText();
@@ -56,8 +59,9 @@ public class GameManager : MonoBehaviour
         // Check if win condition is met
         CheckWinCondition();
 
-        // Check if the player is attempting to restart the game
+        // Check if the player is attempting to restart or pause the game
         RetryCheck();
+        PauseCheck();
 
         if (enemyHasSpawned)
         {
@@ -132,21 +136,48 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void PauseCheck()
+    {
+        if (pauseMenu != null && Input.GetKeyDown(KeyCode.Escape) && !gameIsPaused)
+        {
+            gameIsPaused = true;
+            pauseMenu.SetActive(true);
+            Time.timeScale = 0;
+            Player.canMove = false;
+        }
+        else if (gameIsPaused && Input.GetKeyDown(KeyCode.Escape))
+        {
+            gameIsPaused = false;
+            pauseMenu.SetActive(false);
+            Time.timeScale = 1;
+            Player.canMove = true;
+        }
+
+    }
+    // 
     IEnumerator EnemySpawnCooldown()
     {
-        yield return new WaitForSeconds(2);
+        // 3 second cooldown and then another enemy can spawn
+        yield return new WaitForSeconds(3);
         enemyHasSpawned = false;
     }
 
     // Handle player victory
     void OnPlayerExit()
     {
+        Player.canMove = false;
         // Play victory sound
         GameManager.PlaySound("victory");
 
         // Disable the game UI and show the victory screen
-        ui.SetActive(false);
-        victoryUI.SetActive(true);
+        if (ui != null)
+        {
+            ui.SetActive(false);
+        }
+        if (victoryUI != null)
+        {
+            victoryUI.SetActive(true);
+        }
 
         // Freeze time to prevent any further game updates
         Time.timeScale = 0;
@@ -159,8 +190,14 @@ public class GameManager : MonoBehaviour
         GameManager.PlaySound("gameover");
 
         // Disable the game UI and show the game over screen
-        ui.SetActive(false);
-        gameOverUI.SetActive(true);
+        if (ui != null)
+        {
+            ui.SetActive(false);
+        }
+        if (gameOverUI != null)
+        {
+            gameOverUI.SetActive(true);
+        }
 
         // Freeze time to prevent any further game updates
         Time.timeScale = 0;
@@ -173,30 +210,42 @@ public class GameManager : MonoBehaviour
     void NewGame()
     {
         PlayerDeath -= OnPlayerDeath;
-        // Load the first level
-        SceneManager.LoadScene($"Level{currentLevel}");
+        // Load the current level
+        SceneManager.LoadScene($"{currentLevelName}");
 
         // Reset the current ammo count to zero
         weapon.currentTank = 0;
 
-        // Enable the game UI and hide the game over screen
-        ui.SetActive(true);
-        gameOverUI.SetActive(false);
+        // Enable the game UI and hide the game over screen if they are not null
+        if (ui != null)
+        {
+            ui.SetActive(true);
+        }
+        if (gameOverUI != null)
+        {
+            gameOverUI.SetActive(false);
+        }
 
         //Unfreeze time
+        Player.canMove = true;
         Time.timeScale = 1.0f;
         gameOver = false;
     }
     public void NextLevel()
     {
+        // Player is on the next level
+        currentLevel++;
+
         // Load the next level
-        SceneManager.LoadScene($"Level{currentLevel+1}");
+        SceneManager.LoadScene($"Level{currentLevel}");
 
         // Reset the current ammo count to zero
         weapon.currentTank = 0;
 
         // Unfreeze time
         Time.timeScale = 1.0f;
+
+        Player.canMove = true;
     }
 
     public static void PlaySound(string clip)
@@ -239,17 +288,4 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-
-    /*    void EnemyHitSound()
-        {
-            if(canPlaySound)
-            {
-                canPlaySound = false;
-                audioSource.volume = 0.5f;
-                audioSource.PlayOneShot(enemyHitSound);
-                yield return new WaitForSeconds(.5f);
-                canPlaySound = true;
-            }
-            yield return null;
-        }*/
 }
