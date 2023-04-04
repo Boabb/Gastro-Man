@@ -27,8 +27,8 @@ public class EnemySpawner : MonoBehaviour
         // Set the spawn point for enemies to be just below the spawner object
         spawnPoint = new Vector2(transform.position.x, transform.position.y - 1);
 
-        // If this spawner is the "Cyst" problem
-        if (gameObject.name == "Cyst")
+        // If this spawner is the "Ulcer" problem
+        if (gameObject.name == "Ulcer")
         {
             // Set the initial health to 5
             health = 5;
@@ -112,8 +112,8 @@ public class EnemySpawner : MonoBehaviour
             health -= 1;
         }
 
-        // If this is a "Cyst" enemy and it collided with "Anasthetic"
-        else if (gameObject.name == "Cyst" && collision.gameObject.name == "Anasthetic(Clone)")
+        // If this is a "Ulcer" enemy and it collided with "Antacid"
+        else if (gameObject.name == "Ulcer" && collision.gameObject.name == "Antacid(Clone)")
         {
             // Decrease the enemy's health by 1
             health -= 1;

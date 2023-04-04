@@ -43,10 +43,13 @@ public class Weapon : MonoBehaviour
         {
             ammoType = prefabs[1];
         }
-        else if(ammoPickup == "Anasthetic")
+        else if (ammoPickup == "Antacid")
         {
             ammoType = prefabs[2];
-            Debug.Log("anasthtic set");
+        }
+        else if(ammoPickup == "Anasthetic")
+        {
+            ammoType = prefabs[3];
         }
     }
 

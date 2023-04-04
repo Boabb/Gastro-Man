@@ -65,7 +65,7 @@ public class Enemy : MonoBehaviour
             health -= 1;
         }
         // If the enemy collides with an Anasthetic projectile and the enemy is a bacteria, decrease its health and play a hit sound
-        else if (collision.gameObject.name == "Anasthetic(Clone)" && gameObject.tag == "Bacteria")
+        else if (collision.gameObject.name == "Antacid(Clone)" && gameObject.tag == "Bacteria")
         {
             GameManager.PlaySound("enemyhit");
             Destroy(collision.gameObject);

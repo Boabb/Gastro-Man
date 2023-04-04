@@ -356,6 +356,7 @@ MonoBehaviour:
   prefabs:
   - {fileID: -1610505452855064471, guid: 9fa98214bf2f67140a86e31a4f47ec83, type: 3}
   - {fileID: -1610505452855064471, guid: 1bd141d4fa2ff32489f048156ef0a0bb, type: 3}
+  - {fileID: -1610505452855064471, guid: 7d6d231cb2448a6448dca9a1d5433eb0, type: 3}
   - {fileID: -1610505452855064471, guid: fb942d0f336523841b84127e001f9bfd, type: 3}
   ammoType: {fileID: -1610505452855064471, guid: fb942d0f336523841b84127e001f9bfd, type: 3}
   fireForce: 5
@@ -572,7 +573,6 @@ MonoBehaviour:
   movementSpeed: 4
   jumpForce: 14
   fallMultiplier: 3
-  lowJumpMultipler: 2
 --- !u!61 &8212195490992297699
 BoxCollider2D:
   m_ObjectHideFlags: 0

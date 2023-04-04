@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     [SerializeField] public GameObject firePoint, playerGFX;
 
     // movement and jump related variables that can be tweaked in the Unity Editor
-    [SerializeField] private float movementSpeed = 15f, jumpForce = 10f, fallMultiplier = 2.5f, lowJumpMultipler = 2f;
+    [SerializeField] private float movementSpeed = 15f, jumpForce = 10f, fallMultiplier = 2.5f;
 
     // reference to the player's rigidbody, animator, weapon, and scene camera
     Rigidbody2D body => GetComponent<Rigidbody2D>();
@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     Vector2 moveDirection, mousePosition;
 
     // flags for whether the player is currently jumping and if they are able to jump
-    public static bool jumping = false, canjump = true, canMove = true;
+    public static bool canjump = true, canMove = true;
 
     private void Start()
     {
@@ -88,8 +88,18 @@ public class Player : MonoBehaviour
             Jump();
         }
 
-        // set jump/not jumping animation
-        animator.SetBool("isJumping", jumping);
+        // set walk/not walking animation
+        SetAnimation();
+        
+    }
+
+    void SetAnimation()
+    {
+        if (body.velocity.x > 0.5f && body.velocity.y <= 0.5f || body.velocity.x > - 0.5f && body.velocity.y <= 0.5f)
+        {
+            animator.SetBool("isWalking", true);
+            animator.SetBool("isJumping", false);
+        }
     }
 
     IEnumerator PlayerShooting()
@@ -111,19 +121,19 @@ public class Player : MonoBehaviour
     
     void Jump()
     {
+        // add jump force value to y velocity
         body.velocity = new Vector3(body.velocity.x, jumpForce);
+
+        // disable walking animation
+        animator.SetBool("isJumping", true);
+
+        // disallow the player from jumping twice
         canjump = false;
-        jumping = true;
 
         // faster falling
         if (body.velocity.y < 0)
         {
             body.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-        }
-        // peak height of jump decreased if the player taps space
-        else if (body.velocity.y > 0 && !Input.GetKey(KeyCode.Space))
-        {
-            body.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultipler - 1) * Time.deltaTime;
         }
     }
 
@@ -137,6 +147,10 @@ public class Player : MonoBehaviour
         else if (pickup.name == "Antibiotics")
         {
             weapon.ChangeAmmoType("Antibiotic");
+        }
+        else if (pickup.name == "Antacids")
+        {
+            weapon.ChangeAmmoType("Antacid");
         }
         else if (pickup.name == "Anesthesia")
         {
@@ -153,7 +167,7 @@ public class Player : MonoBehaviour
         if(collision.gameObject.tag == "Ground" && body.velocity.y == 0 || collision.gameObject.tag == "Problem" && body.velocity.y == 0)
         {
             canjump = true;
-            jumping = false;
+            animator.SetBool("isJumping", false);
         }
 
         if (collision.gameObject.tag == "Medicine")
@@ -172,7 +186,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.tag == "Ground" && body.velocity.y == 0 || collision.gameObject.tag == "Problem" && body.velocity.y == 0)
         {
             canjump = true;
-            jumping = false;
+            animator.SetBool("isJumping", false);
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
