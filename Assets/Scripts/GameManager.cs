@@ -14,13 +14,14 @@ public class GameManager : MonoBehaviour
 
     public static Enemy[] enemiesAlive => FindObjectsOfType<Enemy>();
     public static EnemySpawner[] problemsLeft => FindObjectsOfType<EnemySpawner>();
+    public static Vector3 playerSpawnPoint;
 
     public GameObject ui, victoryUI, gameOverUI, pauseMenu, finish;
 
     [SerializeField] public TextMeshProUGUI ammoText, enemyText, problemsText;
     [SerializeField] public Weapon weapon;
 
-    public static bool gameOver = false, enemyHasSpawned, gameIsPaused = false;
+    public static bool gameOver, gameIsPaused, playerHasMoved;
     public static string currentLevelName => SceneManager.GetActiveScene().name;
     public static int currentLevel = 1;
 
@@ -42,6 +43,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        playerSpawnPoint = FindObjectOfType<Player>().transform.position;
         // Allow the game over and victory effects to take place
 
         PlayerExit += OnPlayerExit; // Subscribe the OnPlayerExit method to the PlayerExit Action
@@ -60,13 +62,9 @@ public class GameManager : MonoBehaviour
         CheckWinCondition();
 
         // Check if the player is attempting to restart or pause the game
+        HasPlayerMoved();
         RetryCheck();
         PauseCheck();
-
-        if (enemyHasSpawned)
-        {
-            StartCoroutine(EnemySpawnCooldown());
-        }
     }
 
     // Update the UI text for the ammo count
@@ -154,13 +152,6 @@ public class GameManager : MonoBehaviour
         }
 
     }
-    // 
-    IEnumerator EnemySpawnCooldown()
-    {
-        // 3 second cooldown and then another enemy can spawn
-        yield return new WaitForSeconds(3);
-        enemyHasSpawned = false;
-    }
 
     // Handle player victory
     void OnPlayerExit()
@@ -204,6 +195,21 @@ public class GameManager : MonoBehaviour
 
         // Set the game over flag to true
         gameOver = true;
+    }
+
+    void HasPlayerMoved()
+    {
+        if (FindObjectOfType<Player>() != null)
+        {
+            if (playerSpawnPoint == FindObjectOfType<Player>().transform.position)
+            {
+                playerHasMoved = false;
+            }
+            else
+            {
+                playerHasMoved = true;
+            }
+        }
     }
 
     // Restart the game
@@ -250,8 +256,6 @@ public class GameManager : MonoBehaviour
 
     public static void PlaySound(string clip)
     {
-        // Set the volume of the audio source
-        audioSource.volume = .25f;
 
         // If the game is over, lower the pitch of the audio source
         if (gameOver == true)
@@ -263,28 +267,28 @@ public class GameManager : MonoBehaviour
         switch (clip)
         {
             case "walk":
-                audioSource.PlayOneShot(walkSound);
+                audioSource.PlayOneShot(walkSound, .25f);
                 break;
             case "death":
-                audioSource.PlayOneShot(deathSound);
+                audioSource.PlayOneShot(deathSound, .5f);
                 break;
             case "enemyhit":
-                audioSource.PlayOneShot(enemyHitSound);
+                audioSource.PlayOneShot(enemyHitSound, .05f);
                 break;
             case "enemydeath":
-                audioSource.PlayOneShot(enemyDeathSound);
+                audioSource.PlayOneShot(enemyDeathSound, .1f);
                 break;
             case "playershoot":
-                audioSource.PlayOneShot(playerShootSound);
+                audioSource.PlayOneShot(playerShootSound, .25f);
                 break;
             case "victory":
-                audioSource.PlayOneShot(victorySound);
+                audioSource.PlayOneShot(victorySound, .25f);
                 break;
             case "gameover":
-                audioSource.PlayOneShot(gameOverSound);
+                audioSource.PlayOneShot(gameOverSound, .25f);
                 break;
             case "reload":
-                audioSource.PlayOneShot(reloadSound);
+                audioSource.PlayOneShot(reloadSound, .75f);
                 break;
         }
     }

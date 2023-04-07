@@ -9,19 +9,16 @@ public class EnemySpawner : MonoBehaviour
     // The current enemy prefab to spawn
     Enemy enemyToSpawn;
 
-    // The current health of the enemy spawner
+    // Number values for the current health of this enemy spawner and the enemySpawnCooldown
     public int health;
+    public float enemySpawnCooldown = 7.5f;
 
     // The spawn point for enemies
     Vector3 spawnPoint, playerSpawnPoint;
 
-    // Boolean for spawning enemies
-    public static bool playerHasMoved = false;
+    // A bool that stops multiple enemy spawns in a set period
+    public static bool enemyCanSpawn = true;
 
-    private void Awake()
-    {
-        playerSpawnPoint = FindObjectOfType<Player>().transform.position;
-    }
     void Start()
     {
         // Set the spawn point for enemies to be just below the spawner object
@@ -60,38 +57,22 @@ public class EnemySpawner : MonoBehaviour
             // Generate a random number between 0 and 8
             int randomNum = Random.Range(0, 9);
 
-            // If the enemy's health is less than the random number
-            if (GameManager.enemyHasSpawned == false && GameManager.enemiesAlive.Length < 5 && playerHasMoved)
+            // Only spawn an enemy if one hasn't spawned already and theres less than 5 enemies alive and the player has moved from their spawn location
+            if (enemyCanSpawn && GameManager.enemiesAlive.Length < 5 && GameManager.playerHasMoved)
             {
-                // Spawn a new enemy of the given type at the spawn point
-                Instantiate(enemyToSpawn, spawnPoint, Quaternion.identity);
-
-                GameManager.enemyHasSpawned = true;
+                // Quite a likely outcome but allows the spawner that the enemy comes from to be random
+                if (randomNum < health)
+                {
+                    // Spawn a new enemy of the given type at the spawn point and thus an enemy has spawned
+                    Instantiate(enemyToSpawn, spawnPoint, Quaternion.identity);
+                    enemyCanSpawn = false;            
+                    
+                    // Wait a set period before trying to spawn another enemy
+                    yield return new WaitForSeconds(enemySpawnCooldown);
+                    enemyCanSpawn = true;
+                }
             }
-
-            // Wait for 5 seconds before trying to spawn another enemy
-            yield return new WaitForSeconds(5f);
-        }
-
-    }
-
-    void Update()
-    {
-        HasPlayerMoved();
-    }
-
-    void HasPlayerMoved()
-    {
-        if (FindObjectOfType<Player>() != null)
-        {
-            if (playerSpawnPoint == FindObjectOfType<Player>().transform.position)
-            {
-                playerHasMoved = false;
-            }
-            else
-            {
-                playerHasMoved = true;
-            }
+            yield return null;
         }
     }
 
