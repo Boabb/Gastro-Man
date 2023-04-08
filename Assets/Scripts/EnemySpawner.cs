@@ -14,15 +14,18 @@ public class EnemySpawner : MonoBehaviour
     public float enemySpawnCooldown = 7.5f;
 
     // The spawn point for enemies
-    Vector3 spawnPoint, playerSpawnPoint;
+    Vector3 spawnPoint;
 
     // A bool that stops multiple enemy spawns in a set period
-    public static bool enemyCanSpawn = true;
+    public static bool enemyCanSpawn;
 
     void Start()
     {
         // Set the spawn point for enemies to be just below the spawner object
         spawnPoint = new Vector2(transform.position.x, transform.position.y - 1);
+
+        // An enemy can spawn
+        enemyCanSpawn = true;
 
         // If this spawner is the "Ulcer" problem
         if (gameObject.name == "Ulcer")

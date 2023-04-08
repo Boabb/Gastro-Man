@@ -234,6 +234,7 @@ public class GameManager : MonoBehaviour
 
         //Unfreeze time
         Player.canMove = true;
+        playerHasMoved = false;
         Time.timeScale = 1.0f;
         gameOver = false;
     }

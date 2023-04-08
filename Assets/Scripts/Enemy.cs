@@ -6,30 +6,28 @@ public class Enemy : MonoBehaviour
 {
     int health = 5, maxHealth = 5, currentWaypoint = 0;
     public float speed = 100f, nextWaypointDistance = 1f;
+
+    // Get a reference to the SpriteRenderer component on a child object of the enemy object
+    public Sprite[] enemyGFX;
+    SpriteRenderer currentGFX => GetComponentInChildren<SpriteRenderer>();
     public GameObject healthBarUI;
     public Slider healthSlider;
-    public Sprite[] enemyGFX;
-    Transform target;
-    SpriteRenderer currentGFX;
 
     Path path;
+    Transform target => FindObjectOfType<Player>(true).transform;
 
-    Seeker seeker;
-    Rigidbody2D rb;
+    // Get references to the Seeker and Rigidbody2D components attached to the enemy object
+    Seeker seeker => GetComponent<Seeker>();
+    Rigidbody2D rb => GetComponent<Rigidbody2D>();
 
     private void Start()
     {
-        // Get references to the Seeker and Rigidbody2D components attached to the enemy object
-        seeker = GetComponent<Seeker>();
-        rb = GetComponent<Rigidbody2D>();
-        // Get a reference to the SpriteRenderer component on a child object of the enemy object
-        currentGFX = GetComponentInChildren<SpriteRenderer>();
-        // Find the player object in the scene and set it as the target
-        target = FindObjectOfType<Player>().transform;
         // Start a repeating method to update the enemy's path
         InvokeRepeating("UpdatePath", 0f, .5f);
+
         // Set the enemy's speed to a random value between 50 and 150
         speed = Random.Range(50, 150);
+
         // Update the value of the health slider to reflect the enemy's current health
         healthSlider.value = CalculateHealth();
     }
