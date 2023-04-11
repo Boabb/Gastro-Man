@@ -136,21 +136,24 @@ public class GameManager : MonoBehaviour
 
     void PauseCheck()
     {
-        if (pauseMenu != null && Input.GetKeyDown(KeyCode.Escape) && !gameIsPaused)
+        if (pauseMenu != null)
         {
-            gameIsPaused = true;
-            BGM.Pause();
-            pauseMenu.SetActive(true);
-            Time.timeScale = 0;
-            Player.canMove = false;
-        }
-        else if (gameIsPaused && Input.GetKeyDown(KeyCode.Escape))
-        {
-            gameIsPaused = false;
-            BGM.UnPause();
-            pauseMenu.SetActive(false);
-            Time.timeScale = 1;
-            Player.canMove = true;
+            if (Input.GetKeyDown(KeyCode.Escape) && !gameIsPaused)
+            {
+                gameIsPaused = true;
+                BGM.Pause();
+                pauseMenu.SetActive(true);
+                Time.timeScale = 0;
+                Player.canMove = false;
+            }
+            else if (gameIsPaused && Input.GetKeyDown(KeyCode.Escape))
+            {
+                gameIsPaused = false;
+                BGM.UnPause();
+                pauseMenu.SetActive(false);
+                Time.timeScale = 1;
+                Player.canMove = true;
+            }
         }
 
     }
@@ -280,25 +283,25 @@ public class GameManager : MonoBehaviour
         switch (clip)
         {
             case "walk":
-                audioSource.PlayOneShot(walkSound, .25f);
+                audioSource.PlayOneShot(walkSound);
                 break;
             case "enemyhit":
-                audioSource.PlayOneShot(enemyHitSound, .05f);
+                audioSource.PlayOneShot(enemyHitSound, .5f);
                 break;
             case "enemydeath":
-                audioSource.PlayOneShot(enemyDeathSound, .1f);
+                audioSource.PlayOneShot(enemyDeathSound, .5f);
                 break;
             case "playershoot":
-                audioSource.PlayOneShot(playerShootSound, .25f);
+                audioSource.PlayOneShot(playerShootSound, .5f);
                 break;
             case "victory":
-                audioSource.PlayOneShot(victorySound, .25f);
+                audioSource.PlayOneShot(victorySound);
                 break;
             case "gameover":
-                audioSource.PlayOneShot(gameOverSound, .25f);
+                audioSource.PlayOneShot(gameOverSound);
                 break;
             case "reload":
-                audioSource.PlayOneShot(reloadSound, .75f);
+                audioSource.PlayOneShot(reloadSound, 3f);
                 break;
         }
     }

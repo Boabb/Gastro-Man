@@ -103,10 +103,10 @@ public class Player : MonoBehaviour
 
     IEnumerator PlayerShooting()
     {
-        while(canMove)
+        while(true)
         {
             // checks if the player has pressed left click
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) && canMove)
             {
                 // loads the Fire() method in the weapon script
                 weapon.Fire();
@@ -116,7 +116,6 @@ public class Player : MonoBehaviour
             }
             yield return null;
         }
-        yield return null;
     }
     
     void Jump()

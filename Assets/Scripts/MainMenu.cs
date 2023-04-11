@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public AudioMixer audioMixer/* => Resources.Load<AudioMixer>("MainMixer")*/;
+    public AudioMixer SFXMixer, BGMMixer;
 
     public void ReturnToMainMenu()
     {
@@ -13,9 +13,14 @@ public class MainMenu : MonoBehaviour
         Time.timeScale = 1.0f;
         SceneManager.LoadScene("MainMenu");
     }
-    public void SetVolume(float volume)
+    public void SetMusicVolume(float volume)
     {
-        audioMixer.SetFloat("Volume", volume);
+        BGMMixer.SetFloat("Volume", volume);
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        SFXMixer.SetFloat("Volume", volume);
     }
 
     public void Play()
