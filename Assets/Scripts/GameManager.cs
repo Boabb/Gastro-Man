@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static AudioClip walkSound, deathSound, enemyHitSound, enemyDeathSound, playerShootSound, victorySound, gameOverSound, reloadSound;
+    public static AudioClip walkSound, enemyHitSound, enemyDeathSound, playerShootSound, victorySound, gameOverSound, reloadSound;
     static AudioSource audioSource;
 
     public static Action PlayerExit, PlayerDeath;
@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public GameObject ui, victoryUI, gameOverUI, pauseMenu, finish;
 
     [SerializeField] public TextMeshProUGUI ammoText, enemyText, problemsText;
+    [SerializeField] public AudioSource BGM;
     [SerializeField] public Weapon weapon;
 
     public static bool gameOver, gameIsPaused, playerHasMoved;
@@ -29,7 +30,6 @@ public class GameManager : MonoBehaviour
     {
         // Load all the required audio clips from Resources folder
         walkSound = Resources.Load<AudioClip>("walk");
-        deathSound = Resources.Load<AudioClip>("death");
         enemyHitSound = Resources.Load<AudioClip>("enemyhit");
         enemyDeathSound = Resources.Load<AudioClip>("enemydeath");
         playerShootSound = Resources.Load<AudioClip>("playershoot");
@@ -139,6 +139,7 @@ public class GameManager : MonoBehaviour
         if (pauseMenu != null && Input.GetKeyDown(KeyCode.Escape) && !gameIsPaused)
         {
             gameIsPaused = true;
+            BGM.Pause();
             pauseMenu.SetActive(true);
             Time.timeScale = 0;
             Player.canMove = false;
@@ -146,6 +147,7 @@ public class GameManager : MonoBehaviour
         else if (gameIsPaused && Input.GetKeyDown(KeyCode.Escape))
         {
             gameIsPaused = false;
+            BGM.UnPause();
             pauseMenu.SetActive(false);
             Time.timeScale = 1;
             Player.canMove = true;
@@ -158,7 +160,10 @@ public class GameManager : MonoBehaviour
     {
         Player.canMove = false;
         // Play victory sound
-        GameManager.PlaySound("victory");
+        if (audioSource != null)
+        {
+            PlaySound("victory");
+        }
 
         // Disable the game UI and show the victory screen
         if (ui != null)
@@ -168,6 +173,10 @@ public class GameManager : MonoBehaviour
         if (victoryUI != null)
         {
             victoryUI.SetActive(true);
+        }
+        if (BGM.clip != null)
+        {
+            BGM.Stop();
         }
 
         // Freeze time to prevent any further game updates
@@ -190,6 +199,12 @@ public class GameManager : MonoBehaviour
             gameOverUI.SetActive(true);
         }
 
+        // Stop the background music
+        if(BGM.clip != null)
+        {
+            BGM.Stop();
+        }
+        
         // Freeze time to prevent any further game updates
         Time.timeScale = 0;
         
@@ -240,6 +255,7 @@ public class GameManager : MonoBehaviour
         playerHasMoved = false;
         Time.timeScale = 1.0f;
         gameOver = false;
+        BGM.Play();
     }
     public void NextLevel()
     {
@@ -260,21 +276,11 @@ public class GameManager : MonoBehaviour
 
     public static void PlaySound(string clip)
     {
-
-        // If the game is over, lower the pitch of the audio source
-        if (gameOver == true)
-        {
-            audioSource.pitch *= 0.5f;
-        }
-
         // Play the appropriate sound clip based on the string parameter passed in
         switch (clip)
         {
             case "walk":
                 audioSource.PlayOneShot(walkSound, .25f);
-                break;
-            case "death":
-                audioSource.PlayOneShot(deathSound, .5f);
                 break;
             case "enemyhit":
                 audioSource.PlayOneShot(enemyHitSound, .05f);

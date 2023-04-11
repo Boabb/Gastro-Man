@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2409313021479451076}
   - component: {fileID: 3220766106911042262}
   - component: {fileID: -5559730077327741964}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Lesion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,4 +210,7 @@ MonoBehaviour:
   prefabs:
   - {fileID: 7681280545047050608, guid: 74601e7f6f3e52c41b41d00b4ea26fab, type: 3}
   - {fileID: 7681280545047050608, guid: 8cb6b648739ce0041a81e6603c090225, type: 3}
-  health: 0
+  spawnerHealth: 0
+  burstAmount: 0
+  enemyHealth: 0
+  enemySpawnCooldown: 7.5

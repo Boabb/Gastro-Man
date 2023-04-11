@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -573270454453247689}
   - component: {fileID: 5798399323170756897}
   - component: {fileID: 4300887293793459417}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Ulcer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,10 @@ MonoBehaviour:
   prefabs:
   - {fileID: 7681280545047050608, guid: 74601e7f6f3e52c41b41d00b4ea26fab, type: 3}
   - {fileID: 7681280545047050608, guid: 8cb6b648739ce0041a81e6603c090225, type: 3}
-  health: 0
+  spawnerHealth: 0
+  burstAmount: 0
+  enemyHealth: 0
+  enemySpawnCooldown: 7.5
 --- !u!60 &4300887293793459417
 PolygonCollider2D:
   m_ObjectHideFlags: 0
