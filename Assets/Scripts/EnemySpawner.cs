@@ -10,7 +10,6 @@ public class EnemySpawner : MonoBehaviour
     Enemy enemyToSpawn;
     
     // Number values for the current health of this enemy spawner and the enemySpawnCooldown
-    [Header("Enemy Stats")]
     public int spawnerHealth, burstAmount, enemyHealth;
     public float enemySpawnCooldown = 7.5f;
 
@@ -42,7 +41,7 @@ public class EnemySpawner : MonoBehaviour
             enemyToSpawn = prefabs[1];
         }
         // Set health of the enemy 
-        enemyToSpawn.health = enemyHealth;
+        enemyToSpawn.health = enemyToSpawn.maxHealth = enemyHealth;
 
         // Start spawning enemies of "enemyToSpawn" type
         StartCoroutine(SpawnEnemies());

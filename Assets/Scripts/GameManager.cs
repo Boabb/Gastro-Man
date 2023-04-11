@@ -177,8 +177,8 @@ public class GameManager : MonoBehaviour
     // Handle player death
     void OnPlayerDeath()
     {
-        // Play game over sound
-        GameManager.PlaySound("gameover");
+        
+        
 
         // Disable the game UI and show the game over screen
         if (ui != null)
@@ -192,6 +192,9 @@ public class GameManager : MonoBehaviour
 
         // Freeze time to prevent any further game updates
         Time.timeScale = 0;
+        
+        // Play game over sound
+        GameManager.PlaySound("gameover");
 
         // Set the game over flag to true
         gameOver = true;
