@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     [SerializeField] public GameObject firePoint, playerGFX;
 
     // movement and jump related variables that can be tweaked in the Unity Editor
-    [SerializeField] private float movementSpeed = 15f, jumpForce = 10f, fallMultiplier = 2.5f;
+    [SerializeField] float movementSpeed = 15f, jumpForce = 10f, fallMultiplier = 5f;
 
     // reference to the player's rigidbody, animator, weapon, and scene camera
     Rigidbody2D body => GetComponent<Rigidbody2D>();
@@ -21,13 +21,13 @@ public class Player : MonoBehaviour
     // flags for whether the player is currently jumping and if they are able to jump
     public static bool canjump = true, canMove = true;
 
-    private void Start()
+    void Start()
     {
         // start shooting coroutine to handle player shooting
         StartCoroutine(PlayerShooting());
     }
 
-    private void Update()
+    void Update()
     {
         // retrieve the player's horizontal movement input and normalize it
         float moveX = Input.GetAxisRaw("Horizontal");
@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
     }
 
     // allows all other actions to take place before considering movement
-    private void LateUpdate()
+    void LateUpdate()
     {
         // checks if the player is allowed to move (gameover/victory/pause screens)
         if (canMove)
@@ -98,13 +98,12 @@ public class Player : MonoBehaviour
         if (body.velocity.x > 0.5f && body.velocity.y <= 0.5f || body.velocity.x > - 0.5f && body.velocity.y <= 0.5f)
         {
             animator.SetBool("isWalking", true);
-            animator.SetBool("isJumping", false);
         }
     }
 
     IEnumerator PlayerShooting()
     {
-        while(true)
+        while(canMove)
         {
             // checks if the player has pressed left click
             if (Input.GetMouseButton(0))
@@ -117,6 +116,7 @@ public class Player : MonoBehaviour
             }
             yield return null;
         }
+        yield return null;
     }
     
     void Jump()
@@ -162,7 +162,7 @@ public class Player : MonoBehaviour
         Debug.Log($"You picked up: {pickup.name}");
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.tag == "Ground" && body.velocity.y == 0 || collision.gameObject.tag == "Problem" && body.velocity.y == 0)
         {
@@ -181,7 +181,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Ground" && body.velocity.y == 0 || collision.gameObject.tag == "Problem" && body.velocity.y == 0)
         {
@@ -189,11 +189,12 @@ public class Player : MonoBehaviour
             animator.SetBool("isJumping", false);
         }
     }
-    private void OnCollisionExit2D(Collision2D collision)
+    void OnCollisionExit2D(Collision2D collision)
     {
         // disallows the player to jump if they are already in the air
         if (collision.gameObject.tag == "Ground" && body.velocity.y != 0)
         {
+            animator.SetBool("isJumping", true);
             canjump = false;
         }
     }

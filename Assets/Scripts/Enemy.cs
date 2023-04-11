@@ -4,7 +4,7 @@ using Pathfinding;
 
 public class Enemy : MonoBehaviour
 {
-    int health = 5, maxHealth = 5, currentWaypoint = 0;
+    public int health = 5, maxHealth = 5, currentWaypoint = 0;
     public float speed = 100f, nextWaypointDistance = 1f;
 
     // Get a reference to the SpriteRenderer component on a child object of the enemy object
@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
     Seeker seeker => GetComponent<Seeker>();
     Rigidbody2D rb => GetComponent<Rigidbody2D>();
 
-    private void Start()
+     void Start()
     {
         // Start a repeating method to update the enemy's path
         InvokeRepeating("UpdatePath", 0f, .5f);
@@ -32,7 +32,7 @@ public class Enemy : MonoBehaviour
         healthSlider.value = CalculateHealth();
     }
 
-    private void Update()
+     void Update()
     {
         // Check the enemy's health and update its pathing and direction
         CheckHealth();
@@ -40,13 +40,13 @@ public class Enemy : MonoBehaviour
         AnimateSprite();
     }
 
-    private void LateUpdate()
+     void LateUpdate()
     {
         // Update the value of the health slider to reflect the enemy's current health
         healthSlider.value = CalculateHealth();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+     void OnCollisionEnter2D(Collision2D collision)
     {
         // If the enemy collides with a Gastro Liquid projectile, decrease its health and play a hit sound
         if (collision.gameObject.name == "Gastro Liquid(Clone)")

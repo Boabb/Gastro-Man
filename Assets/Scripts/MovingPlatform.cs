@@ -5,9 +5,9 @@ using UnityEngine;
 public class MovingPlatform : MonoBehaviour
 {
     public Transform[] points;
+
     public float platformSpeed = 1f;
-    private int index = 0;
-    public bool movingPlatform = false;
+    int index = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -33,12 +33,12 @@ public class MovingPlatform : MonoBehaviour
         transform.position = Vector2.MoveTowards(transform.position, points[index].position, platformSpeed * Time.deltaTime);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         collision.transform.SetParent(transform);
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    void OnCollisionExit2D(Collision2D collision)
     {
         collision.transform.SetParent(null);
     }

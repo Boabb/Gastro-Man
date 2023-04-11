@@ -1049,6 +1049,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c9d6f7ff989b174883f52efedf69fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioMixer: {fileID: 0}
 --- !u!4 &232445542 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 375176169566470982, guid: bb479734d39af1147aa6f995438532b8, type: 3}
@@ -1563,6 +1564,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c9d6f7ff989b174883f52efedf69fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioMixer: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2536,7 +2538,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d33edb1fb13fb284583bc97aa29e0459, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2544,7 +2546,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1077285133
@@ -2989,7 +2991,6 @@ GameObject:
   - component: {fileID: 1344062238}
   - component: {fileID: 1344062237}
   - component: {fileID: 1344062240}
-  - component: {fileID: 1344062239}
   m_Layer: 6
   m_Name: Platform
   m_TagString: Ground
@@ -3064,23 +3065,6 @@ Transform:
   m_Father: {fileID: 2023413079}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1344062239
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1344062235}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eaf61956b7638c548bf1625ee4307dfb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  points:
-  - {fileID: 0}
-  - {fileID: 0}
-  platformSpeed: 1
-  movingPlatform: 0
 --- !u!61 &1344062240
 BoxCollider2D:
   m_ObjectHideFlags: 0

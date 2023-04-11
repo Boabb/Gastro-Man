@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     public static string currentLevelName => SceneManager.GetActiveScene().name;
     public static int currentLevel = 1;
 
-    private void Awake()
+    void Awake()
     {
         // Load all the required audio clips from Resources folder
         walkSound = Resources.Load<AudioClip>("walk");

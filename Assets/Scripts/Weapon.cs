@@ -12,7 +12,7 @@ public class Weapon : MonoBehaviour
     public int currentTank = 0;
     public int maxTank { get; set; } = 100;
 
-    private void Start()
+    void Start()
     {
         firePoint = GetComponentInChildren<Transform>();
     }
@@ -25,12 +25,6 @@ public class Weapon : MonoBehaviour
             GameManager.PlaySound("playershoot");
             currentTank --;
         }
-    }
-
-    public void Reload()
-    {
-        int reloadAmount = maxTank - currentTank;
-        currentTank += reloadAmount;
     }
 
     public void ChangeAmmoType(string ammoPickup)
