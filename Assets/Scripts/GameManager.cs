@@ -140,19 +140,11 @@ public class GameManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Escape) && !gameIsPaused)
             {
-                gameIsPaused = true;
-                BGM.Pause();
-                pauseMenu.SetActive(true);
-                Time.timeScale = 0;
-                Player.canMove = false;
+                PauseGame();
             }
             else if (gameIsPaused && Input.GetKeyDown(KeyCode.Escape))
             {
-                gameIsPaused = false;
-                BGM.UnPause();
-                pauseMenu.SetActive(false);
-                Time.timeScale = 1;
-                Player.canMove = true;
+                UnPauseGame();
             }
         }
 
@@ -186,12 +178,42 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
     }
 
+    //Pause the game
+    public void PauseGame()
+    {
+        if (ui != null)
+        {
+            ui.SetActive(false);
+        }
+        gameIsPaused = true;
+        BGM.Pause();
+        if(pauseMenu != null)
+        {
+            pauseMenu.SetActive(true);
+        }
+        Time.timeScale = 0;
+        Player.canMove = false;
+    }
+
+    public void UnPauseGame()
+    {
+        if (ui != null)
+        {
+            ui.SetActive(true);
+        }
+        gameIsPaused = false;
+        BGM.UnPause();
+        if (pauseMenu != null)
+        {
+            pauseMenu.SetActive(false);
+        }
+        Time.timeScale = 1;
+        Player.canMove = true;
+    }
+
     // Handle player death
     void OnPlayerDeath()
     {
-        
-        
-
         // Disable the game UI and show the game over screen
         if (ui != null)
         {
@@ -234,7 +256,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Restart the game
-    void NewGame()
+    public void NewGame()
     {
         PlayerDeath -= OnPlayerDeath;
         // Load the current level
@@ -259,6 +281,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1.0f;
         gameOver = false;
         BGM.Play();
+        PlayerDeath += OnPlayerDeath;
     }
     public void NextLevel()
     {

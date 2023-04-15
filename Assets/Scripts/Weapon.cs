@@ -45,6 +45,10 @@ public class Weapon : MonoBehaviour
         {
             ammoType = prefabs[3];
         }
+        else if (ammoPickup == "Penicillin")
+        {
+            ammoType = prefabs[4];
+        }
     }
 
     public void AddAmmo(int increment)

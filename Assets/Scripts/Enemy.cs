@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
     Seeker seeker => GetComponent<Seeker>();
     Rigidbody2D rb => GetComponent<Rigidbody2D>();
 
-     void Start()
+    void Start()
     {
         // Start a repeating method to update the enemy's path
         InvokeRepeating("UpdatePath", 0f, .5f);
@@ -32,7 +32,7 @@ public class Enemy : MonoBehaviour
         healthSlider.value = CalculateHealth();
     }
 
-     void Update()
+    void Update()
     {
         // Check the enemy's health and update its pathing and direction
         CheckHealth();
@@ -40,13 +40,13 @@ public class Enemy : MonoBehaviour
         AnimateSprite();
     }
 
-     void LateUpdate()
+    void LateUpdate()
     {
         // Update the value of the health slider to reflect the enemy's current health
         healthSlider.value = CalculateHealth();
     }
 
-     void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         // If the enemy collides with a Gastro Liquid projectile, decrease its health and play a hit sound
         if (collision.gameObject.name == "Gastro Liquid(Clone)")
@@ -56,14 +56,21 @@ public class Enemy : MonoBehaviour
             health -= 1;
         }
         // If the enemy collides with an Antibiotic projectile and the enemy is a virus, decrease its health and play a hit sound
-        if (collision.gameObject.name == "Antibiotic(Clone)" && gameObject.tag == "Virus")
+        else if (collision.gameObject.name == "Antibiotic(Clone)" && gameObject.tag == "Virus")
         {
             GameManager.PlaySound("enemyhit");
             Destroy(collision.gameObject);
             health -= 1;
         }
-        // If the enemy collides with an Anasthetic projectile and the enemy is a bacteria, decrease its health and play a hit sound
+        // If the enemy collides with an Antacid projectile and the enemy is a bacteria, decrease its health and play a hit sound
         else if (collision.gameObject.name == "Antacid(Clone)" && gameObject.tag == "Bacteria")
+        {
+            GameManager.PlaySound("enemyhit");
+            Destroy(collision.gameObject);
+            health -= 1;
+        }
+        // If the enemy collides with an Penicillin projectile and the enemy is a strep, decrease its health and play a hit sound
+        else if (collision.gameObject.name == "Penicillin(Clone)" && gameObject.tag == "Strep")
         {
             GameManager.PlaySound("enemyhit");
             Destroy(collision.gameObject);
@@ -72,7 +79,6 @@ public class Enemy : MonoBehaviour
         // If the enemy collides with the player, play a death sound, trigger the player's death event, and deactivate the player object
         else if (collision.gameObject.tag == "Player")
         {
-            GameManager.PlaySound("death");
             GameManager.PlayerDeath?.Invoke();
             collision.gameObject.SetActive(false);
         }

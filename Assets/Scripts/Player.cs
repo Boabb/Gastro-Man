@@ -64,18 +64,18 @@ public class Player : MonoBehaviour
         else if (aimAngle >= -90 && aimAngle <= 90)
         {
             playerGFX.transform.localScale = firePoint.transform.localScale = new Vector3(1f, 1f, 1f);
-            aimAngle = Mathf.Clamp(aimAngle, -30, 40);
+            aimAngle = Mathf.Clamp(aimAngle, -50, 60);
         }
         else if (aimAngle >= 90 && aimAngle < 180)
         {
             playerGFX.transform.localScale = firePoint.transform.localScale = new Vector3(-1f, 1f, 1f);
-            aimAngle = Mathf.Clamp(aimAngle, 140, 180);
+            aimAngle = Mathf.Clamp(aimAngle, 120, 180);
             aimAngle -= 180;
         }
         else
         {
             playerGFX.transform.localScale = firePoint.transform.localScale = new Vector3(-1f, 1f, 1f);
-            aimAngle = Mathf.Clamp(aimAngle, -180, -150);
+            aimAngle = Mathf.Clamp(aimAngle, -180, -130);
             aimAngle -= 180;
         }
 
@@ -154,6 +154,10 @@ public class Player : MonoBehaviour
         else if (pickup.name == "Anesthesia")
         {
             weapon.ChangeAmmoType("Anasthetic");
+        }
+        else if (pickup.name == "Penicillin Pool")
+        {
+            weapon.ChangeAmmoType("Penicillin");
         }
         weapon.AddAmmo(weapon.maxTank);
         Destroy(pickup);

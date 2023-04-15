@@ -40,6 +40,11 @@ public class EnemySpawner : MonoBehaviour
             // Set the enemy to be spawned to be the "Virus" enemy type
             enemyToSpawn = prefabs[1];
         }
+        if(gameObject.name == "Streptococcus")
+        {
+            // Set the enemy to be spawned to be the "Germ" enemy type
+            enemyToSpawn = prefabs[2];
+        }
         // Set health of the enemy 
         enemyToSpawn.health = enemyToSpawn.maxHealth = enemyHealth;
 
@@ -80,22 +85,26 @@ public class EnemySpawner : MonoBehaviour
     // Called when the enemy collides with another object
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // If the enemy collided with "Gastro Liquid"
+        // If this spawner collided with "Gastro Liquid"
         if (collision.gameObject.name == "Gastro Liquid(Clone)")
         {
             // Decrease the enemy's health by 1
             spawnerHealth -= 1;
         }
-
-        // If this is an "Infection" enemy and it collided with "Antibiotic"
+        // If this is an "Infection" and it collided with "Antibiotic"
         else if (gameObject.name == "Infection" && collision.gameObject.name == "Antibiotic(Clone)")
         {
             // Decrease the enemy's health by 1
             spawnerHealth -= 1;
         }
-
-        // If this is a "Ulcer" enemy and it collided with "Antacid"
+        // If this is an "Ulcer" and it collided with "Antacid"
         else if (gameObject.name == "Ulcer" && collision.gameObject.name == "Antacid(Clone)")
+        {
+            // Decrease the enemy's health by 1
+            spawnerHealth -= 1;
+        }
+        // If this is a "Streptococcus" and it collided with "Penicillin"
+        else if (gameObject.name == "Streptococcus" && collision.gameObject.name == "Penicillin(Clone)")
         {
             // Decrease the enemy's health by 1
             spawnerHealth -= 1;

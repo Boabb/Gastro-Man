@@ -6,15 +6,13 @@ TagManager:
   tags:
   - Ground
   - Medicine
-  - Acid
-  - Cyst
   - Problem
   - Antibiotic
   - Gastro Liquid
   - Bacteria
   - Virus
-  - Infection
   - Projectile
+  - Strep
   layers:
   - Default
   - TransparentFX
