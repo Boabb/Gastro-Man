@@ -134,6 +134,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Check if the player is attempting to pause the game
     void PauseCheck()
     {
         if (pauseMenu != null)
@@ -153,14 +154,16 @@ public class GameManager : MonoBehaviour
     // Handle player victory
     void OnPlayerExit()
     {
+        // Restrict player movement
         Player.canMove = false;
+
         // Play victory sound
         if (audioSource != null)
         {
             PlaySound("victory");
         }
 
-        // Disable the game UI and show the victory screen
+        // Disable the game UI and background music and show the victory screen
         if (ui != null)
         {
             ui.SetActive(false);
@@ -169,7 +172,7 @@ public class GameManager : MonoBehaviour
         {
             victoryUI.SetActive(true);
         }
-        if (BGM.clip != null)
+        if (BGM != null)
         {
             BGM.Stop();
         }
@@ -178,7 +181,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
     }
 
-    //Pause the game
+    // Pause the game
     public void PauseGame()
     {
         if (ui != null)
@@ -186,7 +189,11 @@ public class GameManager : MonoBehaviour
             ui.SetActive(false);
         }
         gameIsPaused = true;
-        BGM.Pause();
+        if(BGM != null)
+        {
+            BGM.UnPause();
+        }
+
         if(pauseMenu != null)
         {
             pauseMenu.SetActive(true);
@@ -195,18 +202,25 @@ public class GameManager : MonoBehaviour
         Player.canMove = false;
     }
 
+    // Unpause the game
     public void UnPauseGame()
     {
+        // Disable the puase menu and enable ui elements and unpause the background music
+        if (pauseMenu != null)
+        {
+            pauseMenu.SetActive(false);
+        }
         if (ui != null)
         {
             ui.SetActive(true);
         }
         gameIsPaused = false;
-        BGM.UnPause();
-        if (pauseMenu != null)
+        if(BGM != null)
         {
-            pauseMenu.SetActive(false);
+            BGM.UnPause();
         }
+
+
         Time.timeScale = 1;
         Player.canMove = true;
     }
@@ -225,7 +239,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Stop the background music
-        if(BGM.clip != null)
+        if(BGM != null)
         {
             BGM.Stop();
         }

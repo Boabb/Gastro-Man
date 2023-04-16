@@ -1824,7 +1824,7 @@ GameObject:
   - component: {fileID: 401082014}
   - component: {fileID: 401082013}
   m_Layer: 5
-  m_Name: Button
+  m_Name: NextLevelButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1894,7 +1894,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 218060655}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: NextLevel
         m_Mode: 1
@@ -3879,6 +3879,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5798399323170756897, guid: 14b89a779dc412d43b4c03d8755de3f4, type: 3}
       propertyPath: spawnerHealth
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5798399323170756897, guid: 14b89a779dc412d43b4c03d8755de3f4, type: 3}
+      propertyPath: enemySpawnCooldown
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7873890036200060503, guid: 14b89a779dc412d43b4c03d8755de3f4, type: 3}
@@ -5004,7 +5008,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -5559730077327741964, guid: bb479734d39af1147aa6f995438532b8, type: 3}
       propertyPath: burstAmount
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -5559730077327741964, guid: bb479734d39af1147aa6f995438532b8, type: 3}
       propertyPath: enemyHealth
@@ -5012,6 +5016,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -5559730077327741964, guid: bb479734d39af1147aa6f995438532b8, type: 3}
       propertyPath: spawnerHealth
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -5559730077327741964, guid: bb479734d39af1147aa6f995438532b8, type: 3}
+      propertyPath: enemySpawnCooldown
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 375176169566470982, guid: bb479734d39af1147aa6f995438532b8, type: 3}
@@ -5923,10 +5931,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Well Done!
+  m_text: 'Awesome!
 
 
-    Now do it again with no help!'
+    You''re getting good at this!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7035,7 +7043,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -5559730077327741964, guid: bb479734d39af1147aa6f995438532b8, type: 3}
       propertyPath: burstAmount
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -5559730077327741964, guid: bb479734d39af1147aa6f995438532b8, type: 3}
       propertyPath: enemyHealth
@@ -7043,6 +7051,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -5559730077327741964, guid: bb479734d39af1147aa6f995438532b8, type: 3}
       propertyPath: spawnerHealth
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -5559730077327741964, guid: bb479734d39af1147aa6f995438532b8, type: 3}
+      propertyPath: enemySpawnCooldown
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 375176169566470982, guid: bb479734d39af1147aa6f995438532b8, type: 3}

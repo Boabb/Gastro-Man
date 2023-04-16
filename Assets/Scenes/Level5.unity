@@ -2485,7 +2485,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Well Done!\n\nNow go into the patients stomach and \nsee what other problems
+  m_text: "Great!\n\nNow go into the patients stomach and \nsee what other problems
     we're dealing with!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2570,6 +2570,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1199615483}
     m_Modifications:
+    - target: {fileID: -5559730077327741964, guid: e1c1756762ef0274d8c07677299e762e, type: 3}
+      propertyPath: burstAmount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -5559730077327741964, guid: e1c1756762ef0274d8c07677299e762e, type: 3}
+      propertyPath: enemyHealth
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -5559730077327741964, guid: e1c1756762ef0274d8c07677299e762e, type: 3}
+      propertyPath: spawnerHealth
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -5559730077327741964, guid: e1c1756762ef0274d8c07677299e762e, type: 3}
+      propertyPath: enemySpawnCooldown
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 375176169566470982, guid: e1c1756762ef0274d8c07677299e762e, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -2629,6 +2645,10 @@ PrefabInstance:
     - target: {fileID: 2394540303111187231, guid: e1c1756762ef0274d8c07677299e762e, type: 3}
       propertyPath: m_Name
       value: Streptococcus
+      objectReference: {fileID: 0}
+    - target: {fileID: 3220766106911042262, guid: e1c1756762ef0274d8c07677299e762e, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1c1756762ef0274d8c07677299e762e, type: 3}
@@ -5796,7 +5816,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.569
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.2
+  m_Intensity: 0.05
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 030051e100000000
@@ -5886,7 +5906,7 @@ GameObject:
   - component: {fileID: 2116743541}
   - component: {fileID: 2116743540}
   m_Layer: 5
-  m_Name: Button
+  m_Name: NextLevelButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6035,11 +6055,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5745388075491988442, guid: 0cf41cf7148c9e64488a190b797f7f2c, type: 3}
       propertyPath: m_PointLightInnerRadius
-      value: 0.97
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5745388075491988442, guid: 0cf41cf7148c9e64488a190b797f7f2c, type: 3}
       propertyPath: m_PointLightOuterRadius
-      value: 5.26
+      value: 4.05
       objectReference: {fileID: 0}
     - target: {fileID: 6468042080895130015, guid: 0cf41cf7148c9e64488a190b797f7f2c, type: 3}
       propertyPath: m_RootOrder

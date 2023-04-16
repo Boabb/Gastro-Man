@@ -2485,8 +2485,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Great!\n\nNow go into the patients stomach and \nsee what other problems
-    we're dealing with!"
+  m_text: "Extraordinary!\n\nNow go into the patients stomach and \nsee what other
+    problems we're dealing with!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2576,15 +2576,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -5559730077327741964, guid: e1c1756762ef0274d8c07677299e762e, type: 3}
       propertyPath: enemyHealth
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: -5559730077327741964, guid: e1c1756762ef0274d8c07677299e762e, type: 3}
       propertyPath: spawnerHealth
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: -5559730077327741964, guid: e1c1756762ef0274d8c07677299e762e, type: 3}
       propertyPath: enemySpawnCooldown
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 375176169566470982, guid: e1c1756762ef0274d8c07677299e762e, type: 3}
       propertyPath: m_RootOrder
@@ -5816,7 +5816,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.569
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.1
+  m_Intensity: 0.05
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 030051e100000000
@@ -6055,11 +6055,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5745388075491988442, guid: 0cf41cf7148c9e64488a190b797f7f2c, type: 3}
       propertyPath: m_PointLightInnerRadius
-      value: 0.97
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5745388075491988442, guid: 0cf41cf7148c9e64488a190b797f7f2c, type: 3}
       propertyPath: m_PointLightOuterRadius
-      value: 5.26
+      value: 2.62
       objectReference: {fileID: 0}
     - target: {fileID: 6468042080895130015, guid: 0cf41cf7148c9e64488a190b797f7f2c, type: 3}
       propertyPath: m_RootOrder
@@ -6152,6 +6152,14 @@ PrefabInstance:
     - target: {fileID: 8212195490992297721, guid: 0cf41cf7148c9e64488a190b797f7f2c, type: 3}
       propertyPath: m_Name
       value: Gastro-Man
+      objectReference: {fileID: 0}
+    - target: {fileID: 9110167712229954915, guid: 0cf41cf7148c9e64488a190b797f7f2c, type: 3}
+      propertyPath: m_Intensity
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 9110167712229954915, guid: 0cf41cf7148c9e64488a190b797f7f2c, type: 3}
+      propertyPath: m_PointLightOuterRadius
+      value: 11.57
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0cf41cf7148c9e64488a190b797f7f2c, type: 3}
