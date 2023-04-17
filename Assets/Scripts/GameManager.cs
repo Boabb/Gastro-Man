@@ -43,12 +43,14 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        playerHasMoved = false;
         playerSpawnPoint = FindObjectOfType<Player>().transform.position;
         // Allow the game over and victory effects to take place
 
         PlayerExit += OnPlayerExit; // Subscribe the OnPlayerExit method to the PlayerExit Action
 
         PlayerDeath += OnPlayerDeath; // Subscribe the OnPlayerDeath method to the PlayerDeath Action
+        Time.timeScale = 1.0f;
     }
 
     void Update()
@@ -62,7 +64,7 @@ public class GameManager : MonoBehaviour
         CheckWinCondition();
 
         // Check if the player is attempting to restart or pause the game
-        HasPlayerMoved();
+        StartCoroutine(HasPlayerMoved());
         RetryCheck();
         PauseCheck();
     }
@@ -254,8 +256,9 @@ public class GameManager : MonoBehaviour
         gameOver = true;
     }
 
-    void HasPlayerMoved()
+    IEnumerator HasPlayerMoved()
     {
+        yield return new WaitForSeconds(1f);
         if (FindObjectOfType<Player>() != null)
         {
             if (playerSpawnPoint == FindObjectOfType<Player>().transform.position)
@@ -265,8 +268,10 @@ public class GameManager : MonoBehaviour
             else
             {
                 playerHasMoved = true;
+                yield return null;
             }
         }
+        yield return new WaitForSeconds(1f);
     }
 
     // Restart the game
@@ -295,7 +300,6 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1.0f;
         gameOver = false;
         BGM.Play();
-        PlayerDeath += OnPlayerDeath;
     }
     public void NextLevel()
     {
@@ -309,9 +313,8 @@ public class GameManager : MonoBehaviour
         weapon.currentTank = 0;
 
         // Unfreeze time
-        Time.timeScale = 1.0f;
-
         Player.canMove = true;
+        playerHasMoved = false;
     }
 
     public static void PlaySound(string clip)

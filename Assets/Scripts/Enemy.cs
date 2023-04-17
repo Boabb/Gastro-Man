@@ -25,9 +25,6 @@ public class Enemy : MonoBehaviour
         // Start a repeating method to update the enemy's path
         InvokeRepeating("UpdatePath", 0f, .5f);
 
-        // Set the enemy's speed to a random value between 50 and 150
-        speed = Random.Range(50, 150);
-
         // Update the value of the health slider to reflect the enemy's current health
         healthSlider.value = CalculateHealth();
     }

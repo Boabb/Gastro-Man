@@ -869,8 +869,8 @@ RectTransform:
   - {fileID: 639564998}
   - {fileID: 1669022756}
   - {fileID: 464924813}
-  - {fileID: 1174514875}
   - {fileID: 1971903295}
+  - {fileID: 1174514875}
   - {fileID: 1324542899}
   - {fileID: 1924062587}
   - {fileID: 941712231}
@@ -1369,7 +1369,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 294, y: 104}
+  m_AnchoredPosition: {x: 294, y: 82}
   m_SizeDelta: {x: 200, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &464924814
@@ -1527,8 +1527,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -99.890015, y: 37.179993}
-  m_SizeDelta: {x: 200, y: 75}
+  m_AnchoredPosition: {x: -99.890015, y: 33.38}
+  m_SizeDelta: {x: 200, y: 67.39}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &475874051
 MonoBehaviour:
@@ -2393,7 +2393,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -16.25, y: -32.51}
+  m_AnchoredPosition: {x: -16.25, y: -32.509995}
   m_SizeDelta: {x: 87.54, y: 65.03}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &735167425
@@ -2433,21 +2433,20 @@ MonoBehaviour:
     and right respectively.
 
     - Press ''Space'' to jump and use the mouse to aim
-    your weapon and click or hold ''Left Click''r to shoot.
+    your weapon and click or hold ''Left Click'' to shoot.
 
-    - Eliminate all
-    the problems from the patient and safely make your way to the organs exit using
-    your knowledge of the human body to do so.
+    - Eliminate all the
+    problems from the patient and safely make your way to the organs exit using your
+    knowledge of the human body to do so.
 
-    - Remember to pick up ammo pools
-    to refill your tank but be perservative; once you pick one up it won''t come
-    back.
-
-    - Some ammo types only work against certain enemies but you can still
-    use an ammo type that doesn''t kill a specific enemy to push them back.
+    - Remember to pick up ammo pools to
+    refill your tank but be perservative; once you pick one up it won''t come back.
 
     -
-    Good Luck.'
+    Some ammo types only work against certain enemies but you can still use an ammo
+    type that doesn''t kill a specific enemy to push them back.
+
+    - Good Luck.'
 --- !u!222 &735167426
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3473,7 +3472,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 200
-    m_Alignment: 4
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -3518,7 +3517,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 210143963}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1174514876
 SpriteRenderer:
@@ -3560,7 +3559,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: bef9a4525c7d3e74ca8a6997a429fadd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -4442,7 +4441,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 17.321983, y: -11.34729}
+  m_AnchoredPosition: {x: 17.321983, y: 8}
   m_SizeDelta: {x: 528.5184, y: 239.0892}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1345685345
@@ -5673,7 +5672,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 210143963}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1971903296
 SpriteRenderer:
@@ -5715,7 +5714,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: f9f5c066d1a5ef141bd61cae7938c610, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
